@@ -1,21 +1,54 @@
 <html>
   <head>
+    <title>maxpaj</title>
     <style>
       body {
-        font-size: 25vh;
-        text-align: center;
         padding: 0;
         margin: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        user-select: none;
       }
-      p {   
-        margin: 0;
-        padding: 0;
+
+      a {
+        text-decoration: none;
+      }
+
+      .content {
+        font-size: 25vh;
+      }
+
+      .contact {
+        padding: .25em;
+        margin: .25em;
+        top: 0;
+        position: fixed;
+        width: 100%;
+        background: rgba(255,255,255,0.5);
+        line-height: 1em;
+      }
+
+      .contact a:hover {
+        filter: invert(.5) hue-rotate(90deg);
       }
     </style>
   </head>
   <body>
-    <p>🍔🎉🍔</p>
-    <p>🎉🍔🎉</p>
-    <p>🍔🎉🍔</p>
+    <div class="content">
+      <p>🍔</p>
+    </div>
+    
+    <div class="contact">
+      <a href="https://github.com/maxpaj">
+        <img height=15 src="./assets/github.svg" />
+      </a>
+      <a href="https://stackoverflow.com/users/3383751/maxpaj">
+        <img height=15 src="./assets/stackoverflow.svg" />
+      </a>
+      <a href="https://www.linkedin.com/in/maxpaj/">
+        <img height=15 src="./assets/linkedin.svg" />
+      </a>
+    </div>
   </body>
 </html>
