@@ -16,21 +16,23 @@
         text-decoration: none;
       }
 
+      p {
+        margin: 0;
+      }
+
       .content {
         font-size: 25vh;
       }
 
       .contact {
-        padding: .5vh;
-        margin: .5vh;
         top: 0;
-        position: fixed;
+        margin: .5vh;
         width: 100%;
-        background: rgba(255,255,255,0.5);
-        line-height: 1vh;
+        position: fixed;
       }
       
       .contact img {
+        margin: .5vh;
         height: 5vh; 
       }
 
@@ -40,10 +42,6 @@
     </style>
   </head>
   <body>
-    <div class="content">
-      <p>🍔</p>
-    </div>
-    
     <div class="contact">
       <a href="https://github.com/maxpaj">
         <img src="./assets/github.svg" />
@@ -54,6 +52,10 @@
       <a href="https://www.linkedin.com/in/maxpaj/">
         <img src="./assets/linkedin.svg" />
       </a>
+    </div>
+
+    <div class="content">
+      <p>🍔</p>
     </div>
   </body>
 </html>
