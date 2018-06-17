@@ -1,1 +1,1 @@
-maxpaj.github.io
+[maxpaj.github.io](maxpaj.github.io)
