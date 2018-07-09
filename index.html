@@ -52,18 +52,24 @@
         filter: invert(.5);
       }
 
-      .content .me {
+      #me {
         animation: orbit 4s infinite linear;
         width: 100%;
         height: 100%;
         position: absolute;
+        z-index: 2;
+        display: none;
       }
 
-      .content .me img {
+      #me img {
         animation: orbit 10s infinite linear;
         clip-path: circle(50%);
         height: 10vh;
         width: 10vh;
+      }
+
+      audio {
+        width: 100%;  
       }
 
       @keyframes orbit {
@@ -85,10 +91,22 @@
     </div>
 
     <div class="content">
-      <div class="me">
+      <div id="me">
         <img src="./assets/favicon.ico" />
       </div>      
       <p>🍔</p>
+      <audio autoplay controls id="audio" src="./assets/mii_plaza.mp3"></audio>
     </div>
+
+    <script>
+      var audio = document.getElementById("audio");
+      audio.volume = 0.2;
+      audio.onplay = () => {
+        document.getElementById("me").style.display = "initial";
+      }
+      audio.onpause = () => {
+        document.getElementById("me").style.display = "none";
+      }
+    </script>
   </body>
 </html>
