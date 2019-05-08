@@ -9,6 +9,7 @@
 html {
   box-sizing: border-box;
   font-family: "Roboto", sans-serif;
+  font-size: calc(14px + (26 - 14) * ((100vw - 400px) / (1600 - 400)));
 }
 
 body {
@@ -42,7 +43,7 @@ nav img:hover {
 }
 
 section {
-  width: 25%;
+  width: 75%;
   min-width: 300px;
 }
 
