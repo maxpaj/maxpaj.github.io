@@ -10,17 +10,21 @@ html {
 	box-sizing: border-box;
 	height: 100%;
 	font-family: "Roboto", sans-serif;
-	font-size: clamp(14px, 10vw, 48px);
+	font-size: clamp(14px, 5vw, 48px);
 	color: #333;
 }
 
 body {
 	min-width: 300px;
 	max-width: 1200px;
-	width: 100%;
 	padding: 1em;
+	width: 100%;
 	height: 100%;
 	margin: 0;
+}
+
+h1 {
+	display: inline-block;
 }
 
 main {
@@ -36,27 +40,25 @@ a {
 	text-decoration: none;
 }
 
-.profile-picture img {
+.profile-picture {
 	clip-path: circle(50%);
 	height: 5em;
-}
-
-.profile-picture p {
-	font-size: 0.5em;
-	text-align: center;
+	margin: 1em 0.5em;
+	float: right;
 }
 
 nav {
-	margin-top: 2em;
+	margin-top: 4em;
 }
 
 nav a {
-	margin-right: 0.5em;
+	margin-right: 1em;
 }
 
 nav img {
 	height: 2em;
-	min-height: 80px;
+	min-height: 50px;
+	max-height: 80px;
 	opacity: 0.75;
 	transition: 0.2s;
 }
