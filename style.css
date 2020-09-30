@@ -1,4 +1,12 @@
-@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@400;900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@100;200;300;400;900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=PT+Sans&display=swap");
+
+:root {
+	--background: #1b1b1b;
+	--color: #fff;
+	--font: "Roboto", sans-serif;
+	--font-second: "PT Sans", sans-serif;
+}
 
 *,
 *:before,
@@ -9,68 +17,101 @@
 html {
 	box-sizing: border-box;
 	height: 100%;
-	font-family: "Roboto", sans-serif;
-	font-size: clamp(14px, 5vw, 48px);
-	color: #333;
+	font-family: var(--font);
+	color: var(--color);
+	background: var(--background);
 }
 
 body {
-	min-width: 300px;
-	max-width: 1200px;
-	padding: 1em;
 	width: 100%;
 	height: 100%;
 	margin: 0;
-}
-
-h1 {
-	display: inline-block;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
 }
 
 main {
+	padding: 1em;
+	width: 100%;
+	height: 100%;
 	display: flex;
-	flex-direction: row;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
 }
 
-main div {
-	margin: 0.5em;
+div.row {
+	display: flex;
+	align-items: center;
+	flex-wrap: wrap;
+	max-width: 1200px;
+}
+
+h1 {
+	font-weight: 100;
+	margin: 0;
+	font-size: 5em;
+	letter-spacing: -0.05em;
 }
 
 a {
 	text-decoration: none;
 }
 
-.profile-picture {
+img.profile-picture {
 	clip-path: circle(50%);
-	height: 5em;
-	margin: 1em 0.5em;
+	height: 14em;
+	margin-right: 1em;
 	float: right;
 }
 
 nav {
-	margin-top: 4em;
+	font-size: 3em;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	margin-top: 1em;
+}
+
+nav span {
+	height: 1em;
+	vertical-align: bottom;
+	line-height: 0.75em;
 }
 
 nav a {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	color: var(--color);
+	font-family: var(--font-second);
+}
+
+nav a:not(:last-child) {
 	margin-right: 1em;
 }
 
 nav img {
-	height: 2em;
-	min-height: 50px;
-	max-height: 80px;
+	filter: invert(1);
+	height: 1em;
+	width: 1em;
+}
+
+nav span,
+nav img {
 	opacity: 0.75;
 	transition: 0.2s;
 }
 
+nav span:hover,
 nav img:hover {
 	opacity: 1;
 }
 
-h1 {
-	font-weight: 900;
-	margin: 0;
-	font-size: 3em;
-	letter-spacing: -0.05em;
-	display: inline-block;
+p.lead {
+	color: #eee;
+	font-family: var(--font-second);
+	letter-spacing: 0.1em;
 }
