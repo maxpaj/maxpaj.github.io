@@ -1,11 +1,10 @@
-@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@100;200;300;400;900&display=swap");
-@import url("https://fonts.googleapis.com/css2?family=PT+Sans&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Fira+Code&display=swap");
 
 :root {
 	--background: #1b1b1b;
-	--color: #fff;
-	--font: "Roboto", sans-serif;
-	--font-second: "PT Sans", sans-serif;
+	--color: #eee;
+	--font: "Fira Code", sans-serif;
+	--font-second: "Fira Code", sans-serif;
 }
 
 *,
@@ -26,15 +25,12 @@ body {
 	width: 100%;
 	height: 100%;
 	margin: 0;
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
-	align-items: center;
 }
 
 main {
 	padding: 1em;
 	width: 100%;
+	max-width: 1200px;
 	height: 100%;
 	display: flex;
 	flex-direction: column;
@@ -42,55 +38,41 @@ main {
 	align-items: center;
 }
 
-div.row {
-	display: flex;
-	align-items: center;
-	flex-wrap: wrap;
-	max-width: 1200px;
-}
-
 h1 {
+	display: inline-block;
+	padding: .125em .25em;
 	font-weight: 100;
 	margin: 0;
-	font-size: 5em;
-	letter-spacing: -0.05em;
+	font-size: 2em;
+	background: #fe3f3b;
+	box-shadow: -.25em .25em 0 #e93703;
 }
 
 a {
 	text-decoration: none;
 }
 
-img.profile-picture {
-	clip-path: circle(50%);
-	height: 14em;
-	margin-right: 1em;
-	float: right;
-}
-
 nav {
-	font-size: 3em;
+	font-size: 1.5em;
 	display: flex;
-	justify-content: space-between;
-	align-items: center;
 	margin-top: 1em;
 }
 
 nav span {
 	height: 1em;
+	line-height: .9em;
 	vertical-align: bottom;
-	line-height: 0.75em;
 }
 
 nav a {
 	display: flex;
-	justify-content: center;
 	align-items: center;
 	color: var(--color);
 	font-family: var(--font-second);
 }
 
 nav a:not(:last-child) {
-	margin-right: 1em;
+	margin-right: 1.5em;
 }
 
 nav img {
@@ -108,10 +90,4 @@ nav img {
 nav span:hover,
 nav img:hover {
 	opacity: 1;
-}
-
-p.lead {
-	color: #eee;
-	font-family: var(--font-second);
-	letter-spacing: 0.1em;
 }
