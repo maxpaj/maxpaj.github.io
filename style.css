@@ -1,93 +1,96 @@
-@import url("https://fonts.googleapis.com/css2?family=Fira+Code&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Fira+Code");
 
 :root {
-	--background: #1b1b1b;
-	--color: #eee;
-	--font: "Fira Code", sans-serif;
-	--font-second: "Fira Code", sans-serif;
+    --background: #1b1b1b url("./assets/back.webp") no-repeat fixed center;
+    --color: #eee;
+    --font: "Fira Code", sans-serif;
+    --font-second: "Fira Code", sans-serif;
 }
 
 *,
 *:before,
 *:after {
-	box-sizing: inherit;
+    box-sizing: inherit;
 }
 
 html {
-	box-sizing: border-box;
-	height: 100%;
-	font-family: var(--font);
-	color: var(--color);
-	background: var(--background);
+    box-sizing: border-box;
+    height: 100%;
+    font-family: var(--font);
+    color: var(--color);
+    background: var(--background);
 }
 
 body {
-	width: 100%;
-	height: 100%;
-	margin: 0;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.blur {
+    backdrop-filter: blur(15px) opacity(1);
 }
 
 main {
-	padding: 1em;
-	width: 100%;
-	max-width: 1200px;
-	height: 100%;
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
-	align-items: center;
+    padding: 3em;
+    width: 100%;
+    max-width: 800px;
+    transition: backdrop-filter 0.2s;
 }
 
 h1 {
-	display: inline-block;
-	padding: .125em .25em;
-	font-weight: 100;
-	margin: 0;
-	font-size: 2em;
-	background: #fe3f3b;
-	box-shadow: -.25em .25em 0 #e93703;
+    font-weight: 100;
+    margin: 0;
+    font-size: 2em;
+}
+
+p {
+    text-shadow: black 1px 1px 5px;
 }
 
 a {
-	text-decoration: none;
+    text-decoration: none;
 }
 
 nav {
-	font-size: 1.5em;
-	display: flex;
-	margin-top: 1em;
+    font-size: 1.5em;
+    display: flex;
+    margin-top: 1em;
 }
 
 nav span {
-	height: 1em;
-	line-height: .9em;
-	vertical-align: bottom;
+    height: 1em;
+    line-height: 0.9em;
+    vertical-align: bottom;
 }
 
 nav a {
-	display: flex;
-	align-items: center;
-	color: var(--color);
-	font-family: var(--font-second);
-}
-
-nav a:not(:last-child) {
-	margin-right: 1.5em;
+    display: flex;
+    margin-right: 1.5em;
+    align-items: center;
+    color: var(--color);
+    font-family: var(--font-second);
 }
 
 nav img {
-	filter: invert(1);
-	height: 1em;
-	width: 1em;
+    filter: invert(0.95);
+    max-height: 1em;
+    max-width: 1em;
+    height: 1em;
+    width: 1em;
 }
 
 nav span,
 nav img {
-	opacity: 0.75;
-	transition: 0.2s;
+    opacity: 0.75;
+    transition: opacity 0.2s;
 }
 
 nav span:hover,
 nav img:hover {
-	opacity: 1;
+    opacity: 1;
 }
