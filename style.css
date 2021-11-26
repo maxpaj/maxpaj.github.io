@@ -32,6 +32,7 @@ body {
 }
 
 .blur {
+    -webkit-backdrop-filter: blur(15px) opacity(1);
     backdrop-filter: blur(15px) opacity(1);
 }
 
@@ -39,7 +40,7 @@ main {
     padding: 3em;
     width: 100%;
     max-width: 800px;
-    transition: backdrop-filter 0.2s;
+    transition: backdrop-filter -webkit-backdrop-filter 0.2s;
 }
 
 h1 {
