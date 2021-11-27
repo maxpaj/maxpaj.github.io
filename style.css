@@ -1,7 +1,8 @@
 @import url("https://fonts.googleapis.com/css2?family=Fira+Code");
 
 :root {
-    --background: #1b1b1b url("./assets/back.webp") no-repeat fixed center;
+    --background: #1b1b1b url("./assets/back.webp") no-repeat fixed center /
+        cover;
     --color: #eee;
     --font: "Fira Code", sans-serif;
     --font-second: "Fira Code", sans-serif;
