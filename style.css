@@ -1,53 +1,97 @@
-@import url("https://fonts.googleapis.com/css2?family=Fira+Code");
+@import url("https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@400;600&display=swap");
 
 :root {
-    --background: #1b1b1b url("./assets/back.webp") no-repeat fixed center /
-        cover;
-    --color: #eee;
-    --font: "Fira Code", sans-serif;
-    --font-second: "Fira Code", sans-serif;
+    --true-blue: rgb(102, 148, 255);
+    --ghost-white: #f7f5fbff;
+    --accent-color: #5c43b7;
+    --text-color: #221e22ff;
+    --background: #ffed56;
+    --splash-background: var(--accent-color);
+    --font: "Roboto Slab", serif;
 }
 
 *,
 *:before,
 *:after {
-    box-sizing: inherit;
+    box-sizing: border-box;
 }
 
 html {
-    box-sizing: border-box;
-    height: 100%;
     font-family: var(--font);
-    color: var(--color);
-    background: var(--background);
+    color: var(--text-color);
+    scroll-behavior: smooth;
 }
 
+html,
 body {
     width: 100%;
     height: 100%;
     margin: 0;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-}
-
-.blur {
-    -webkit-backdrop-filter: blur(15px) opacity(1);
-    backdrop-filter: blur(15px) opacity(1);
+    font-size: 18px;
+    background: var(--background);
+    overflow-x: hidden;
 }
 
 main {
-    padding: 3em;
     width: 100%;
-    max-width: 800px;
-    transition: backdrop-filter -webkit-backdrop-filter 0.2s;
 }
 
-h1 {
-    font-weight: 100;
+section {
+    padding: 3em;
+}
+
+.splash {
+    width: 100%;
+    height: 100vh;
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    overflow-x: hidden;
+    position: relative;
+}
+
+.splash-first {
+    padding: 25vh 25vh 4em 4em;
+}
+
+.splash-second {
+    background: var(--accent-color);
+    position: relative;
+}
+
+.splash h1 {
+    font-size: 4em;
+    margin: 0 0 0.25em 0;
+    letter-spacing: -3px;
+    line-height: 1em;
+    font-weight: 400;
+}
+
+.splash p {
+    font-size: 1em;
+    margin: 0 0 0.25em 0;
+    line-height: 1.5em;
+    letter-spacing: 0.025em;
+}
+
+.splash img {
+    width: 400px;
+    height: 400px;
+    position: absolute;
+    top: calc(50% - 200px);
+    left: -100px;
+    box-shadow: 2em 3em 0 var(--background), -1em -2em 0 var(--accent-color);
+}
+
+.splash-figure {
+    position: absolute;
+    background: url(./assets/figure.svg) no-repeat calc(100% - 20vw) 5vh;
+    pointer-events: none;
+    height: 100%;
+    width: 100%;
+}
+
+p {
     margin: 0;
-    font-size: 2em;
 }
 
 a {
@@ -62,20 +106,20 @@ nav {
 
 nav span {
     height: 1em;
-    line-height: 0.9em;
+    line-height: 18px;
     vertical-align: bottom;
 }
 
 nav a {
     display: flex;
-    margin-right: 1.5em;
+    margin-right: 0.5em;
     align-items: center;
-    color: var(--color);
-    font-family: var(--font-second);
+    color: var(--text-color);
+    font-family: var(--font);
 }
 
-nav img {
-    filter: invert(0.95);
+nav svg {
+    fill: var(--text-color);
     max-height: 1em;
     max-width: 1em;
     height: 1em;
@@ -83,12 +127,41 @@ nav img {
 }
 
 nav span,
-nav img {
+nav svg {
     opacity: 0.75;
     transition: opacity 0.2s;
 }
 
 nav span:hover,
-nav img:hover {
+nav svg:hover {
     opacity: 1;
+}
+
+.accent-color {
+    color: var(--accent-color);
+    font-weight: 600;
+}
+
+@media (max-width: 900px) {
+    .splash {
+        grid-template-columns: 1fr;
+    }
+
+    .splash-first {
+        padding: 3em 0 6em 0;
+    }
+
+    .splash-second {
+        height: 45vh;
+    }
+
+    .splash-second img {
+        left: auto;
+        right: 10%;
+    }
+
+    .splash-figure {
+        background: url(./assets/figure.svg) no-repeat 20vw -20%;
+        transform: rotate(180deg);
+    }
 }
