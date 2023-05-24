@@ -8,7 +8,7 @@
     --text-color: var(--accent-color);
     --background: #ffed56;
     --splash-background: var(--accent-color);
-    --font: "Source Sans Pro", serif;
+    --font: "Source Sans Pro", Arial, sans-serif;
 }
 
 *,
@@ -57,12 +57,20 @@ section {
     position: relative;
 }
 
+.splash section {
+    position: relative;
+    z-index: 1;
+}
+
 .splash-first {
-    padding: 25vh 25vh 4em 4em;
+    padding: 25% 5% 4em 4em;
+    overflow: hidden;
+    position: relative;
 }
 
 .splash-second {
     background: var(--accent-color);
+    overflow: hidden;
     position: relative;
 }
 
@@ -99,6 +107,15 @@ section {
     width: 100%;
 }
 
+.contact {
+    margin-top: 4em;
+}
+
+.contact p {
+    margin: 0.5em 0;
+    font-size: 0.75em;
+}
+
 p {
     margin: 0;
 }
@@ -110,7 +127,7 @@ a {
 nav {
     font-size: 1.5em;
     display: flex;
-    margin-top: 1em;
+    margin: 0.5em 0;
 }
 
 nav a {
@@ -140,6 +157,30 @@ nav svg:hover {
     opacity: 1;
 }
 
+.square {
+    position: absolute;
+    border-radius: 50%;
+    mix-blend-mode: soft-light;
+}
+
+.square-first {
+    background: var(--true-blue);
+}
+
+.square-second {
+    background: var(--background);
+}
+
+.squares-first,
+.squares-second {
+    top: 0;
+    left: 0;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+}
+
 @media (max-width: 900px) {
     .splash {
         grid-template-columns: 1fr;
@@ -147,7 +188,8 @@ nav svg:hover {
     }
 
     .splash-first {
-        padding: 40% 0 6em 0;
+        padding: 0 10vw;
+        height: 75vh;
     }
 
     .splash-second {
