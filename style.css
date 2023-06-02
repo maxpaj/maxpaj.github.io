@@ -1,5 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@400;600&display=swap");
-@import url("https://fonts.googleapis.com/css2?family=Source+Sans+Pro:ital,wght@0,400;1,600&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Geologica:wght@200;300;500;600&family=Source+Sans+Pro:ital,wght@0,400;1,600&display=swap");
 
 :root {
     --true-blue: rgb(102, 148, 255);
@@ -8,7 +7,8 @@
     --text-color: var(--accent-color);
     --background: #ffed56;
     --splash-background: var(--accent-color);
-    --font: "Source Sans Pro", Arial, sans-serif;
+    --font: "Geologica", Arial, sans-serif;
+    --padding-left: 10vw;
 }
 
 *,
@@ -37,10 +37,6 @@ main {
     width: 100%;
 }
 
-section {
-    padding: 3em;
-}
-
 .accent-color {
     color: var(--accent-color);
     font-weight: 600;
@@ -52,7 +48,7 @@ section {
     width: 100%;
     height: 100vh;
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 2fr 1fr;
     overflow-x: hidden;
     position: relative;
 }
@@ -63,7 +59,7 @@ section {
 }
 
 .splash-first {
-    padding: 25% 5% 4em 4em;
+    padding: 5rem var(--padding-left);
     overflow: hidden;
     position: relative;
 }
@@ -90,7 +86,7 @@ section {
     letter-spacing: 0.025em;
 }
 
-.splash img {
+.splash .img {
     width: 400px;
     height: 400px;
     position: absolute;
@@ -146,15 +142,17 @@ nav svg {
     width: 1em;
 }
 
-nav span,
-nav svg {
-    opacity: 0.75;
-    transition: opacity 0.2s;
+footer {
+    padding: 3rem var(--padding-left);
+    background: var(--true-blue);
+    color: white;
+    position: relative;
+    overflow: hidden;
+    font-size: 0.75rem;
 }
 
-nav span:hover,
-nav svg:hover {
-    opacity: 1;
+footer p {
+    margin: 0.5em 0;
 }
 
 .square {
@@ -164,11 +162,11 @@ nav svg:hover {
 }
 
 .square-first {
-    background: var(--true-blue);
+    background: var(--background);
 }
 
 .square-second {
-    background: var(--background);
+    background: var(--accent-color);
 }
 
 .squares-first,
@@ -181,6 +179,47 @@ nav svg:hover {
     z-index: 0;
 }
 
+.sprite {
+    mix-blend-mode: overlay;
+    position: absolute;
+    z-index: 1;
+    animation: floating 3s ease-in-out infinite;
+}
+
+.floating {
+    animation-name: floating;
+    animation-duration: 6s;
+    animation-iteration-count: infinite;
+    animation-timing-function: cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+
+@keyframes floating {
+    0% {
+        transform: translate(0, 0px);
+    }
+    50% {
+        transform: translate(0, 5px);
+    }
+    100% {
+        transform: translate(0, 0px);
+    }
+}
+
+.sprite-tree {
+    bottom: -10vw;
+    transform: rotate(180deg);
+    right: -10vw;
+    z-index: 1;
+    height: 100%;
+}
+
+.sprite-keyboard {
+    bottom: 0vw;
+    left: 20vw;
+    z-index: 1;
+    height: 100%;
+}
+
 @media (max-width: 900px) {
     .splash {
         grid-template-columns: 1fr;
@@ -188,12 +227,12 @@ nav svg:hover {
     }
 
     .splash-first {
-        padding: 0 10vw;
+        padding: 5rem 2rem;
         height: 75vh;
     }
 
     .splash-second {
-        height: 55vh;
+        display: none;
     }
 
     .splash-figure {

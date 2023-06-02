@@ -1,19 +1,36 @@
 document.addEventListener("DOMContentLoaded", () => {
-    for (let i = 0; i < 3; i++) {
-        generateSquare("square-first", ".squares-first");
-        generateSquare("square-second", ".squares-second");
-    }
+    // generateSquares();
 });
+
+function generateSquares() {
+    for (let i = 0; i < 20; i++) {
+        generateSquare(
+            "square-first",
+            ".squares-first",
+            50 + 250 * Math.random()
+        );
+    }
+
+    for (let i = 0; i < 10; i++) {
+        generateSquare(
+            "square-second",
+            ".squares-second",
+            50 + 250 * Math.random() * i
+        );
+    }
+
+    // generateSquare("square-first", "footer");
+}
 
 function generateSquare(
     className = "square square-first",
-    parent = ".squares"
+    parent = ".squares",
+    size = 50 + 500 * Math.random()
 ) {
     const newEl = document.createElement("div");
     newEl.classList.add("square");
     newEl.classList.add(className);
 
-    const size = 500 * Math.random();
     newEl.style.width = `${size}px`;
     newEl.style.height = `${size}px`;
 
@@ -23,5 +40,8 @@ function generateSquare(
     newEl.style.left = cssLeft;
     newEl.style.top = cssTop;
 
-    document.querySelector(parent).appendChild(newEl);
+    const parentEl = document.querySelector(parent);
+    if (!parentEl) return;
+
+    parentEl.appendChild(newEl);
 }
