@@ -215,7 +215,7 @@ footer p {
 
 .sprite-keyboard {
     bottom: 0vw;
-    left: 20vw;
+    right: -300px;
     z-index: 1;
     height: 100%;
 }
