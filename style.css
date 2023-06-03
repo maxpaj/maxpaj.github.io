@@ -220,6 +220,11 @@ footer p {
     height: 100%;
 }
 
+img {
+    opacity: 0;
+    transition: opacity 0.4s cubic-bezier(0.25, 0.45, 0.45, 0.95);
+}
+
 @media (max-width: 900px) {
     .splash {
         grid-template-columns: 1fr;

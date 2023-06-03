@@ -1,5 +1,13 @@
-document.addEventListener("DOMContentLoaded", () => {
-    // generateSquares();
+document.addEventListener("DOMContentLoaded", function () {
+    let el = document.getElementsByTagName("img");
+
+    Object.values(el).forEach(function (el) {
+        var img = new Image();
+        img.onload = function () {
+            el.style.opacity = 1;
+        };
+        img.src = el.src;
+    });
 });
 
 function generateSquares() {
