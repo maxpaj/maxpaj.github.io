@@ -1,14 +1,15 @@
 @import url("https://fonts.googleapis.com/css2?family=Geologica:wght@200;300;500;600&family=Source+Sans+Pro:ital,wght@0,400;1,600&display=swap");
 
 :root {
-    --true-blue: rgb(102, 148, 255);
-    --ghost-white: #f7f5fbff;
-    --accent-color: #5c43b7;
-    --text-color: var(--accent-color);
-    --background: #ffed56;
+    --accent-color: #7155da;
+    --background: #ffcc00;
+
+    --text-color: #420045;
     --splash-background: var(--accent-color);
     --font: "Geologica", Arial, sans-serif;
     --padding-left: 10vw;
+    --tilt: 10deg;
+    --max-width: 1200px;
 }
 
 *,
@@ -29,28 +30,36 @@ body {
     height: 100%;
     margin: 0;
     font-size: 18px;
-    background: var(--background);
     overflow-x: hidden;
+    background: var(--background);
 }
 
 main {
     width: 100%;
 }
 
-.accent-color {
-    color: var(--accent-color);
-    font-weight: 600;
-    font-style: italic;
-    text-transform: uppercase;
-}
-
 .splash {
     width: 100%;
     height: 100vh;
-    display: grid;
-    grid-template-columns: 2fr 1fr;
-    overflow-x: hidden;
+    display: flex;
+    overflow: hidden;
     position: relative;
+}
+
+.splash h1 {
+    font-size: 4rem;
+    font-style: italic;
+    margin: 0 0 0.25rem 0;
+    letter-spacing: 0.125rem;
+    line-height: 6rem;
+    font-weight: 400;
+}
+
+.splash p {
+    font-size: 1rem;
+    margin: 0 0 0.25rem 0;
+    line-height: 1.5rem;
+    letter-spacing: 0.025rem;
 }
 
 .splash section {
@@ -58,49 +67,36 @@ main {
     z-index: 1;
 }
 
-.splash-first {
-    padding: 5rem var(--padding-left);
-    overflow: hidden;
-    position: relative;
+.left {
+    padding: 20vh var(--padding-left);
+    width: calc(min(50%, var(--max-width)));
 }
 
-.splash-second {
+.right {
+    position: absolute;
+    display: block;
     background: var(--accent-color);
+    transform: rotate(var(--tilt));
     overflow: hidden;
-    position: relative;
-}
+    right: calc(max(-50%, -1 * var(--max-width)));
 
-.splash h1 {
-    font-size: 4em;
-    font-style: italic;
-    margin: 0 0 0.25em 0;
-    letter-spacing: 2px;
-    line-height: 1em;
-    font-weight: 400;
-}
+    height: 150%;
+    top: -15%;
 
-.splash p {
-    font-size: 1em;
-    margin: 0 0 0.25em 0;
-    line-height: 1.5em;
-    letter-spacing: 0.025em;
-}
-
-.splash .img {
-    width: 400px;
-    height: 400px;
-    position: absolute;
-    top: calc(50% - 200px);
-    left: -100px;
-    box-shadow: 2em 3em 0 var(--background), -1em -2em 0 var(--accent-color);
-}
-
-.splash-figure {
-    position: absolute;
-    background: url(./assets/figure.svg) no-repeat calc(100% - 20vw) 5vh;
-    pointer-events: none;
-    height: 100%;
     width: 100%;
+}
+
+.sprite {
+    position: relative;
+    mix-blend-mode: overlay;
+    z-index: 1;
+    top: calc(50% - 450px);
+    left: -150px;
+    animation: floating 3s ease-in-out infinite;
+    animation-name: floating;
+    animation-duration: 6s;
+    animation-iteration-count: infinite;
+    animation-timing-function: cubic-bezier(0.165, 0.84, 0.44, 1);
 }
 
 .contact {
@@ -121,14 +117,14 @@ a {
 }
 
 nav {
-    font-size: 1.5em;
+    font-size: 1.5rem;
     display: flex;
-    margin: 0.5em 0;
+    margin: 0.5rem 0;
 }
 
 nav a {
     display: flex;
-    margin-right: 0.5em;
+    margin-right: 0.5rem;
     align-items: center;
     color: var(--text-color);
     font-family: var(--font);
@@ -136,88 +132,22 @@ nav a {
 
 nav svg {
     fill: var(--text-color);
-    max-height: 1em;
-    max-width: 1em;
-    height: 1em;
-    width: 1em;
-}
-
-footer {
-    padding: 3rem var(--padding-left);
-    background: var(--true-blue);
-    color: white;
-    position: relative;
-    overflow: hidden;
-    font-size: 0.75rem;
-}
-
-footer p {
-    margin: 0.5em 0;
-}
-
-.square {
-    position: absolute;
-    border-radius: 50%;
-    mix-blend-mode: soft-light;
-}
-
-.square-first {
-    background: var(--background);
-}
-
-.square-second {
-    background: var(--accent-color);
-}
-
-.squares-first,
-.squares-second {
-    top: 0;
-    left: 0;
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    z-index: 0;
-}
-
-.sprite {
-    mix-blend-mode: overlay;
-    position: absolute;
-    z-index: 1;
-    animation: floating 3s ease-in-out infinite;
-}
-
-.floating {
-    animation-name: floating;
-    animation-duration: 6s;
-    animation-iteration-count: infinite;
-    animation-timing-function: cubic-bezier(0.165, 0.84, 0.44, 1);
+    max-height: 1.5rem;
+    max-width: 1.5rem;
+    height: 1.5rem;
+    width: 1.5rem;
 }
 
 @keyframes floating {
     0% {
-        transform: translate(0, 0px);
+        transform: translateY(0px);
     }
     50% {
-        transform: translate(0, 5px);
+        transform: translateY(5px);
     }
     100% {
-        transform: translate(0, 0px);
+        transform: translateY(0px);
     }
-}
-
-.sprite-tree {
-    bottom: -10vw;
-    transform: rotate(180deg);
-    right: -10vw;
-    z-index: 1;
-    height: 100%;
-}
-
-.sprite-keyboard {
-    bottom: 0vw;
-    right: -300px;
-    z-index: 1;
-    height: 100%;
 }
 
 img {
@@ -227,21 +157,25 @@ img {
 
 @media (max-width: 900px) {
     .splash {
-        grid-template-columns: 1fr;
-        grid-template-rows: 3fr 1fr;
+        display: block;
     }
 
-    .splash-first {
+    .right {
+        height: 150%;
+        top: 50%;
+
+        right: 0%;
+        width: 200%;
+    }
+
+    .right .sprite {
+        top: -400px;
+        left: 33%;
+    }
+
+    .left {
+        width: 100%;
         padding: 5rem 2rem;
         height: 75vh;
-    }
-
-    .splash-second {
-        display: none;
-    }
-
-    .splash-figure {
-        background: url(./assets/figure.svg) no-repeat 20vw -20%;
-        transform: rotate(180deg);
     }
 }
