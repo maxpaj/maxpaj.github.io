@@ -1,14 +1,13 @@
 @import url("https://fonts.googleapis.com/css2?family=Geologica:wght@200;300;500;600&family=Source+Sans+Pro:ital,wght@0,400;1,600&display=swap");
 
 :root {
-    --accent-color: #7155da;
     --background: #ffcc00;
+    --accent-color: #7155da;
+    --text-color: #4a4a4a;
 
-    --text-color: #420045;
-    --splash-background: var(--accent-color);
     --font: "Geologica", Arial, sans-serif;
     --padding-left: 10vw;
-    --tilt: 10deg;
+    --tilt: 3.5deg;
     --max-width: 1200px;
 }
 
@@ -90,7 +89,7 @@ main {
     position: relative;
     mix-blend-mode: overlay;
     z-index: 1;
-    top: calc(50% - 450px);
+    top: calc(50% - 600px);
     left: -150px;
     animation: floating 3s ease-in-out infinite;
     animation-name: floating;
