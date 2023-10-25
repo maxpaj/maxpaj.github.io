@@ -14,14 +14,14 @@
         {
             "imports": {
                 "three": "https://unpkg.com/three@0.157.0/build/three.module.js",
-                "three/addons/": "https://unpkg.com/three@0.157.0/examples/jsm/"
+                "ascii": "./three/ascii.js"
             }
         }
     </script>
 
     <script type="module">
         import * as THREE from 'three';
-        import { AsciiEffect } from 'three/addons/effects/AsciiEffect.js';
+        import { AsciiEffect } from 'ascii';
 
         let camera, controls, scene, renderer, effect;
         let sphere, plane;
@@ -36,6 +36,7 @@
             camera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 1, 1000);
             camera.position.y = 50;
             camera.position.z = 500;
+            camera.position.x = -150;
 
             scene = new THREE.Scene();
             scene.background = new THREE.Color(0, 0, 0);
@@ -51,10 +52,10 @@
             sphere = new THREE.Mesh(new THREE.SphereGeometry(200, 20, 10), new THREE.MeshPhongMaterial({ flatShading: true }));
             scene.add(sphere);
 
-            renderer = new THREE.WebGLRenderer();
+            renderer = new THREE.WebGLRenderer({ alpha: true });
             renderer.setSize(window.innerWidth, window.innerHeight);
 
-            effect = new AsciiEffect(renderer, ' .:-+*=%@#', { invert: true });
+            effect = new AsciiEffect(renderer, ' .:-+*=%@#', { invert: true, background: "linear-gradient(45deg, #000, #111)" });
             effect.setSize(window.innerWidth, window.innerHeight);
             effect.domElement.style.color = 'white';
             effect.domElement.style.backgroundColor = 'black';
