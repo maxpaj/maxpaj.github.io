@@ -1,11 +1,12 @@
-@import url("https://fonts.googleapis.com/css2?family=Geologica:wght@200;300;500;600&family=Source+Sans+Pro:ital,wght@0,400;1,600&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Fira+Code:wght@200;300;500;600&family=Source+Sans+Pro:ital,wght@0,400;1,600&display=swap");
 
 :root {
-    --background: #ffcc00;
-    --accent-color: #7155da;
-    --text-color: #393939;
+    --background: linear-gradient(120deg, #0f0f0f -20%, #ffc800 200%);
 
-    --font: "Geologica", Arial, sans-serif;
+    --accent-color: #c3c3c3;
+    --text-color: #c3c3c3;
+
+    --font: "Fira Code", Arial, sans-serif;
     --padding-left: 10vw;
     --tilt: 3.5deg;
     --max-width: 1200px;
@@ -28,152 +29,49 @@ body {
     width: 100%;
     height: 100%;
     margin: 0;
-    font-size: 18px;
+    font-size: 14px;
     overflow-x: hidden;
     background: var(--background);
+    color: var(--text-color);
 }
 
 main {
     width: 100%;
-}
-
-.splash {
-    width: 100%;
-    height: 100vh;
-    display: flex;
-    overflow: hidden;
-    position: relative;
-}
-
-.splash h1 {
-    font-size: 4rem;
-    font-style: italic;
-    margin: 0 0 0.25rem 0;
-    letter-spacing: 0.125rem;
-    line-height: 6rem;
-    font-weight: 400;
-}
-
-.splash p {
-    font-size: 1rem;
-    margin: 0 0 0.25rem 0;
-    line-height: 1.5rem;
-    letter-spacing: 0.025rem;
-}
-
-.splash section {
-    position: relative;
-    z-index: 1;
-}
-
-.left {
-    padding: 20vh var(--padding-left);
-    width: calc(min(50%, var(--max-width)));
-}
-
-.right {
+    padding: 7rem 2rem;
+    max-width: 500px;
     position: absolute;
-    display: block;
-    background: var(--accent-color);
-    transform: rotate(var(--tilt));
-    overflow: hidden;
-    right: calc(max(-50%, -1 * var(--max-width)));
-
-    height: 150%;
-    top: -15%;
-
-    width: 100%;
-}
-
-.sprite {
-    position: relative;
-    mix-blend-mode: overlay;
     z-index: 1;
-    top: calc(50% - 600px);
-    left: -150px;
-    animation: floating 3s ease-in-out infinite;
-    animation-name: floating;
-    animation-duration: 6s;
-    animation-iteration-count: infinite;
-    animation-timing-function: cubic-bezier(0.165, 0.84, 0.44, 1);
+    top: 0;
 }
 
-.contact {
-    margin-top: 4em;
+.logo {
+    height: 3rem;
+    width: 3rem;
+    margin: 2rem;
+    position: fixed;
+    color: var(--text-color);
+    top: 0;
+    left: 0;
 }
 
-.contact p {
-    margin: 0.5em 0;
-    font-size: 0.75em;
+#container {
+    position: fixed;
+    z-index: 0;
+    top: 0;
 }
 
 p {
-    margin: 0;
+    font-size: 1rem;
+    margin: 0 0 1rem 0;
+    line-height: 1.5rem;
+    font-weight: 100;
+}
+
+hr {
+    border: 0;
+    border-top: 1px solid var(--accent-color);
 }
 
 a {
     text-decoration: none;
-}
-
-nav {
-    font-size: 1.5rem;
-    display: flex;
-    margin: 0.5rem 0;
-}
-
-nav a {
-    display: flex;
-    margin-right: 0.5rem;
-    align-items: center;
-    color: var(--text-color);
-    font-family: var(--font);
-}
-
-nav svg {
-    fill: var(--text-color);
-    max-height: 1.5rem;
-    max-width: 1.5rem;
-    height: 1.5rem;
-    width: 1.5rem;
-}
-
-@keyframes floating {
-    0% {
-        transform: translateY(0px);
-    }
-    50% {
-        transform: translateY(5px);
-    }
-    100% {
-        transform: translateY(0px);
-    }
-}
-
-img {
-    opacity: 0;
-    transition: opacity 0.4s cubic-bezier(0.25, 0.45, 0.45, 0.95);
-}
-
-@media (max-width: 900px) {
-    .splash {
-        display: block;
-    }
-
-    .right {
-        height: 150%;
-        top: 60%;
-        right: 0%;
-        width: 200%;
-    }
-
-    .right .sprite {
-        top: -400px;
-        left: 33%;
-    }
-
-    .left {
-        width: 100%;
-        padding: 5rem 2rem;
-        height: 75vh;
-    }
 }
