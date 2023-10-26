@@ -1,7 +1,7 @@
 @import url("https://fonts.googleapis.com/css2?family=Fira+Code:wght@200;300;500;600&family=Source+Sans+Pro:ital,wght@0,400;1,600&display=swap");
 
 :root {
-    --background: linear-gradient(120deg, #0f0f0f -20%, #ffc800 200%);
+    --background: #0f0f0f;
 
     --accent-color: #c3c3c3;
     --text-color: #c3c3c3;
