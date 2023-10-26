@@ -1,225 +1,185 @@
 /**
  * Ascii generation is based on https://github.com/hassadee/jsascii/blob/master/jsascii.js
  */
+
+const Y_SCALE = 2;
+const X_SCALE = 1;
+
+const EMPTY_CHAR = "&nbsp;"; // &nbsp;
+
 class AsciiEffect {
-    constructor(renderer, charSet = " .:-=+*#%@", options = {}) {
-        const fResolution = options["resolution"] || 0.15; // Higher for more details
-        const iScale = options["scale"] || 1;
-        const bColor = options["color"] || false; // nice but slows down rendering!
-        const bAlpha = options["alpha"] || false; // Transparency
-        const bBlock = options["block"] || false; // blocked characters. like good O dos
-        const bInvert = options["invert"] || false; // black is white, white is black
-        const strResolution = options["strResolution"] || "low";
-        const background = options["background"];
+    constructor(renderer, charSet = " .:-=+*#%@", options = {}, debug = false) {
+        this.resolution = options["resolution"] || 0.15; // Higher for more details
+        this.iScale = options["scale"] || 1;
+        this.bAlpha = options["alpha"] || false; // Transparency
+        this.bBlock = options["block"] || false; // blocked characters. like good O dos
+        this.strResolution = options["strResolution"] || "low";
 
-        let width, height;
+        this.domRenderElement = document.createElement("div");
+        this.domRenderElement.className = "render";
+        document.body.appendChild(this.domRenderElement);
 
-        const domElement = document.createElement("div");
-        domElement.style.cursor = "default";
-        domElement.style.background = background;
+        this.charList = charSet; //(charSet || " .,:;i1tfLCG08@").split("");
+        this.setAsciiRenderTargetStyle();
 
-        const oAscii = document.createElement("table");
-        domElement.appendChild(oAscii);
-
-        let iWidth, iHeight;
-        let oImg;
-
-        this.setSize = function (w, h) {
-            width = w;
-            height = h;
-
-            renderer.setSize(w, h);
-
-            initAsciiSize();
-        };
-
-        this.render = function (scene, camera) {
-            renderer.render(scene, camera);
-            asciifyImage(oAscii);
-        };
-
-        this.domElement = domElement;
-
-        function initAsciiSize() {
-            iWidth = Math.floor(width * fResolution);
-            iHeight = Math.floor(height * fResolution);
-
-            oCanvas.width = iWidth;
-            oCanvas.height = iHeight;
-
-            oImg = renderer.domElement;
-
-            if (oImg.style.backgroundColor) {
-                oAscii.rows[0].cells[0].style.backgroundColor =
-                    oImg.style.backgroundColor;
-                oAscii.rows[0].cells[0].style.color = oImg.style.color;
-            }
-
-            const oStyle = oAscii.style;
-            oStyle.whiteSpace = "pre";
-            oStyle.margin = "0px";
-            oStyle.padding = "0px";
-            oStyle.letterSpacing = fLetterSpacing + "px";
-            oStyle.fontFamily = strFont;
-            oStyle.fontSize = fFontSize + "px";
-            oStyle.lineHeight = fLineHeight + "px";
-            oStyle.textAlign = "left";
-            oStyle.textDecoration = "none";
+        this.canvas = document.createElement("canvas");
+        if (debug) {
+            document.body.appendChild(this.canvas);
         }
 
-        const aDefaultCharList = " .,:;i1tfLCG08@".split("");
-        const aDefaultColorCharList = " CGO08@".split("");
+        this.canvas.width = this.width;
+        this.canvas.height = this.height;
+    }
+
+    getLetterSpacing() {
+        if (this.strResolution == "low") {
+            switch (this.iScale) {
+                case 1:
+                    return -1;
+                case 2:
+                case 3:
+                    return -2.1;
+                case 4:
+                    return -3.1;
+                case 5:
+                    return -4.15;
+            }
+        }
+
+        return -1;
+    }
+
+    setAsciiRenderTargetStyle() {
+        this.domRenderElement.style.whiteSpace = "pre";
+        this.domRenderElement.style.margin = "0px";
+        this.domRenderElement.style.padding = "0px";
+
+        let fLetterSpacing = this.getLetterSpacing();
+        this.domRenderElement.style.letterSpacing = fLetterSpacing + "px";
+
+        const fFontSize = (2 / this.resolution) * this.iScale;
+        this.domRenderElement.style.fontSize = fFontSize + "px";
+
+        const fLineHeight = (2 / this.resolution) * this.iScale;
+        this.domRenderElement.style.lineHeight = fLineHeight + "px";
+
         const strFont = "courier new, monospace";
+        this.domRenderElement.style.fontFamily = strFont;
+        this.domRenderElement.style.textAlign = "left";
+        this.domRenderElement.style.textDecoration = "none";
+    }
 
-        const oCanvasImg = renderer.domElement;
+    getPixelBrightness(pixelArray, x, y) {
+        const iOffset = (y * this.width + x) * 4;
+        return {
+            red: pixelArray[iOffset],
+            green: pixelArray[iOffset + 1],
+            blue: pixelArray[iOffset + 2],
+            alpha: pixelArray[iOffset + 3],
+        };
+    }
 
-        const oCanvas = document.createElement("canvas");
-        if (!oCanvas.getContext) {
-            return;
-        }
+    getPixelCharacter(brightness) {
+        const charIndex = Math.floor(brightness * this.charList.length);
+        const pixelChar = this.charList[charIndex];
+        if (pixelChar === undefined || pixelChar == " ") return EMPTY_CHAR;
+        return pixelChar;
+    }
 
-        const oCtx = oCanvas.getContext("2d");
-        if (!oCtx.getImageData) {
-            return;
-        }
+    // Render ASCII based on image pixel data
+    renderAscii(pixelArray, width, height) {
+        let strChars = "";
 
-        let aCharList = bColor ? aDefaultColorCharList : aDefaultCharList;
+        const yInc = Math.floor(Y_SCALE * 1);
+        const xInc = Math.floor(X_SCALE * 1);
 
-        if (charSet) aCharList = charSet;
+        for (let y = 0; y < height; y += yInc) {
+            for (let x = 0; x < width; x += xInc) {
+                const { red, green, blue, alpha } = this.getPixelBrightness(
+                    pixelArray,
+                    x,
+                    y
+                );
 
-        const fFontSize = (2 / fResolution) * iScale;
-        const fLineHeight = (2 / fResolution) * iScale;
+                const pixelCharacter = this.getPixelCharacter(
+                    (0.3 * red + 0.59 * green + 0.11 * blue) / 255
+                );
 
-        let fLetterSpacing = 0;
-
-        if (strResolution == "low") {
-            switch (iScale) {
-                case 1:
-                    fLetterSpacing = -1;
-                    break;
-                case 2:
-                case 3:
-                    fLetterSpacing = -2.1;
-                    break;
-                case 4:
-                    fLetterSpacing = -3.1;
-                    break;
-                case 5:
-                    fLetterSpacing = -4.15;
-                    break;
-            }
-        }
-
-        if (strResolution == "medium") {
-            switch (iScale) {
-                case 1:
-                    fLetterSpacing = 0;
-                    break;
-                case 2:
-                    fLetterSpacing = -1;
-                    break;
-                case 3:
-                    fLetterSpacing = -1.04;
-                    break;
-                case 4:
-                case 5:
-                    fLetterSpacing = -2.1;
-                    break;
-            }
-        }
-
-        if (strResolution == "high") {
-            switch (iScale) {
-                case 1:
-                case 2:
-                    fLetterSpacing = 0;
-                    break;
-                case 3:
-                case 4:
-                case 5:
-                    fLetterSpacing = -1;
-                    break;
-            }
-        }
-
-        function asciifyImage(oAscii) {
-            oCtx.clearRect(0, 0, iWidth, iHeight);
-            oCtx.drawImage(oCanvasImg, 0, 0, iWidth, iHeight);
-            const oImgData = oCtx.getImageData(0, 0, iWidth, iHeight).data;
-
-            // Coloring loop starts now
-            let strChars = "";
-
-            // console.time('rendering');
-
-            for (let y = 0; y < iHeight; y += 2) {
-                for (let x = 0; x < iWidth; x++) {
-                    const iOffset = (y * iWidth + x) * 4;
-
-                    const iRed = oImgData[iOffset];
-                    const iGreen = oImgData[iOffset + 1];
-                    const iBlue = oImgData[iOffset + 2];
-                    const iAlpha = oImgData[iOffset + 3];
-                    let iCharIdx;
-
-                    let fBrightness;
-
-                    fBrightness =
-                        (0.3 * iRed + 0.59 * iGreen + 0.11 * iBlue) / 255;
-                    // fBrightness = (0.3*iRed + 0.5*iGreen + 0.3*iBlue) / 255;
-
-                    if (iAlpha == 0) {
-                        // should calculate alpha instead, but quick hack :)
-                        //fBrightness *= (iAlpha / 255);
-                        fBrightness = 1;
-                    }
-
-                    iCharIdx = Math.floor(
-                        (1 - fBrightness) * (aCharList.length - 1)
-                    );
-
-                    if (bInvert) {
-                        iCharIdx = aCharList.length - iCharIdx - 1;
-                    }
-
-                    let strThisChar = aCharList[iCharIdx];
-
-                    if (strThisChar === undefined || strThisChar == " ")
-                        strThisChar = "&nbsp;";
-
-                    if (bColor) {
-                        strChars +=
-                            "<span style='" +
-                            "color:rgb(" +
-                            iRed +
-                            "," +
-                            iGreen +
-                            "," +
-                            iBlue +
-                            ");" +
-                            (bBlock
-                                ? "background-color:rgb(" +
-                                  iRed +
-                                  "," +
-                                  iGreen +
-                                  "," +
-                                  iBlue +
-                                  ");"
-                                : "") +
-                            (bAlpha ? "opacity:" + iAlpha / 255 + ";" : "") +
-                            "'>" +
-                            strThisChar +
-                            "</span>";
-                    } else {
-                        strChars += strThisChar;
-                    }
-                }
-
-                strChars += "<br/>";
+                strChars += pixelCharacter;
             }
 
-            oAscii.innerHTML = `<tr><td style="display:block;width:${width}px;height:${height}px;overflow:hidden">${strChars}</td></tr>`;
+            // Next row
+            strChars += "<br/>";
         }
+
+        return strChars;
+    }
+
+    setSize(width, height) {
+        this.width = Math.floor(width * this.resolution);
+        this.height = Math.floor(height * this.resolution);
+
+        this.domRenderElement.style.width = width;
+        this.domRenderElement.style.height = height;
+
+        this.canvas.width = this.width;
+        this.canvas.height = this.height;
+    }
+
+    getImagePixelArray(renderer) {
+        const renderTarget = renderer.domElement;
+
+        const canvasContext = this.canvas.getContext("2d");
+        canvasContext.clearRect(0, 0, this.width, this.height);
+        canvasContext.drawImage(renderTarget, 0, 0, this.width, this.height);
+
+        const imageData = canvasContext.getImageData(
+            0,
+            0,
+            this.width,
+            this.height
+        ).data;
+
+        return {
+            buffer: imageData,
+            width: this.width,
+            height: this.height,
+        };
+    }
+
+    getImagePixelArrayRenderTarget(renderer) {
+        const renderTarget = renderer.getRenderTarget();
+        const buffer = new Uint8Array(
+            renderTarget.width * renderTarget.height * 4
+        );
+
+        // Read rendered pixels from render
+        renderer.readRenderTargetPixels(
+            renderTarget,
+            0,
+            0,
+            renderTarget.width,
+            renderTarget.height,
+            buffer
+        );
+
+        return {
+            buffer,
+            height: renderTarget.height,
+            width: renderTarget.width,
+        };
+    }
+
+    updateDOM(ascii) {
+        this.domRenderElement.innerHTML = ascii;
+    }
+
+    render(renderer) {
+        // Get rendered pixels from render target'
+        const { buffer, height, width } = this.getImagePixelArray(renderer);
+
+        const renderedAscii = this.renderAscii(buffer, width, height);
+        this.updateDOM(renderedAscii, width, height);
     }
 }
 

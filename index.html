@@ -23,7 +23,7 @@
         import * as THREE from 'three';
         import { AsciiEffect } from 'ascii';
 
-        let camera, controls, scene, renderer, effect;
+        let camera, controls, scene, renderer, renderTarget, effect;
         let torus, plane, sphere;
 
         const container = document.querySelector(".three");
@@ -59,9 +59,14 @@
             renderer = new THREE.WebGLRenderer({ alpha: true });
             renderer.setSize(window.innerWidth, window.innerHeight);
 
+            // document.body.appendChild(renderer.domElement);
+            // renderTarget = new THREE.WebGLRenderTarget(window.innerWidth, window.innerHeight);
+            // renderer.setRenderTarget(renderTarget)
+
             effect = new AsciiEffect(renderer, ' .:-+*=%@#', { invert: true, alpha: true });
             effect.setSize(window.innerWidth, window.innerHeight);
-            container.appendChild(effect.domElement);
+
+            container.appendChild(effect.domRenderElement);
             window.addEventListener('resize', onWindowResize);
         }
 
@@ -70,6 +75,7 @@
             camera.updateProjectionMatrix();
             renderer.setSize(window.innerWidth, window.innerHeight);
             effect.setSize(window.innerWidth, window.innerHeight);
+            // renderTarget.setSize(window.innerWidth, window.innerHeight);
         }
 
         function animate() {
@@ -86,7 +92,8 @@
             sphere.rotation.x = timer * 0.0003;
             sphere.rotation.z = timer * 0.0002;
 
-            effect.render(scene, camera);
+            renderer.render(scene, camera);
+            effect.render(renderer);
         }
     </script>
 
