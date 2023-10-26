@@ -1,7 +1,7 @@
 @import url("https://fonts.googleapis.com/css2?family=Fira+Code:wght@200;300;500;600&family=Source+Sans+Pro:ital,wght@0,400;1,600&display=swap");
 
 :root {
-    --background: #0f0f0f;
+    --background: linear-gradient(50deg, #0f0f0f 50%, #fff 150%);
 
     --accent-color: #c3c3c3;
     --text-color: #c3c3c3;
@@ -54,10 +54,20 @@ main {
     left: 0;
 }
 
-#container {
+.three {
     position: fixed;
     z-index: 0;
     top: 0;
+}
+
+svg {
+    width: 1.5rem;
+    height: 1.5rem;
+    fill: var(--text-color);
+}
+
+svg:hover {
+    fill: var(--accent-color);
 }
 
 p {

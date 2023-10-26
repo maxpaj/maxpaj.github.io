@@ -26,7 +26,7 @@
         let camera, controls, scene, renderer, effect;
         let torus, plane, sphere;
 
-        const container = document.querySelector("#container");
+        const container = document.querySelector(".three");
         const start = Date.now();
 
         init();
@@ -42,17 +42,14 @@
             scene.background = new THREE.Color(0, 0, 0);
 
             const pointLight1 = new THREE.PointLight(0xffffff, 3, 0, 0);
-            pointLight1.position.set(500, 500, 500);
+            pointLight1.position.set(500, 500, 0);
             scene.add(pointLight1);
-
-            const pointLight2 = new THREE.PointLight(0xffffff, 1, 0, 0);
-            pointLight2.position.set(-500, -500, -500);
-            scene.add(pointLight2);
 
             torus = new THREE.Mesh(
                 new THREE.TorusGeometry(200, 30, 30, 20),
                 new THREE.MeshPhongMaterial({ flatShading: true })
             );
+
             torus.position.x = -40;
             scene.add(torus);
 
@@ -62,10 +59,8 @@
             renderer = new THREE.WebGLRenderer({ alpha: true });
             renderer.setSize(window.innerWidth, window.innerHeight);
 
-            effect = new AsciiEffect(renderer, ' .:-+*=%@#', { invert: true });
+            effect = new AsciiEffect(renderer, ' .:-+*=%@#', { invert: true, alpha: true });
             effect.setSize(window.innerWidth, window.innerHeight);
-            effect.domElement.style.color = 'white';
-            effect.domElement.style.backgroundColor = 'black';
             container.appendChild(effect.domElement);
             window.addEventListener('resize', onWindowResize);
         }
@@ -97,7 +92,6 @@
 
     <main>
         <img class="logo" src="assets/logo.svg" />
-
         <section>
             <p>I am a freelance software developer who thrives on solving problems, building amazing
                 products, improving developer workflows and getting stuff done.
@@ -105,7 +99,7 @@
         </section>
     </main>
 
-    <div id="container"></div>
+    <div class="three"></div>
 </body>
 
 </html>
