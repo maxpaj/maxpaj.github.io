@@ -46,14 +46,14 @@
             scene.add(pointLight1);
 
             torus = new THREE.Mesh(
-                new THREE.TorusGeometry(200, 30, 30, 20),
+                new THREE.TorusGeometry(200, 30, 10, 10),
                 new THREE.MeshPhongMaterial({ flatShading: true })
             );
 
             torus.position.x = -40;
             scene.add(torus);
 
-            sphere = new THREE.Mesh(new THREE.SphereGeometry(100, 20, 10), new THREE.MeshPhongMaterial({ flatShading: true }));
+            sphere = new THREE.Mesh(new THREE.SphereGeometry(100, 10, 10), new THREE.MeshPhongMaterial({ flatShading: true }));
             scene.add(sphere);
 
             renderer = new THREE.WebGLRenderer({ alpha: true });

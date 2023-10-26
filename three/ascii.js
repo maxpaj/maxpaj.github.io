@@ -5,14 +5,12 @@
 const Y_SCALE = 2;
 const X_SCALE = 1;
 
-const EMPTY_CHAR = "&nbsp;"; // &nbsp;
+const EMPTY_CHAR = " "; // &nbsp;
 
 class AsciiEffect {
     constructor(renderer, charSet = " .:-=+*#%@", options = {}, debug = false) {
         this.resolution = options["resolution"] || 0.15; // Higher for more details
         this.iScale = options["scale"] || 1;
-        this.bAlpha = options["alpha"] || false; // Transparency
-        this.bBlock = options["block"] || false; // blocked characters. like good O dos
         this.strResolution = options["strResolution"] || "low";
 
         this.domRenderElement = document.createElement("div");
@@ -54,23 +52,24 @@ class AsciiEffect {
         this.domRenderElement.style.margin = "0px";
         this.domRenderElement.style.padding = "0px";
 
-        let fLetterSpacing = this.getLetterSpacing();
-        this.domRenderElement.style.letterSpacing = fLetterSpacing + "px";
+        let letterSpacing = this.getLetterSpacing();
+        this.domRenderElement.style.letterSpacing = letterSpacing + "px";
 
-        const fFontSize = (2 / this.resolution) * this.iScale;
-        this.domRenderElement.style.fontSize = fFontSize + "px";
+        const fontSize = (2 / this.resolution) * this.iScale;
+        this.domRenderElement.style.fontSize = fontSize + "px";
 
-        const fLineHeight = (2 / this.resolution) * this.iScale;
-        this.domRenderElement.style.lineHeight = fLineHeight + "px";
+        const lineHeight = (2 / this.resolution) * this.iScale;
+        this.domRenderElement.style.lineHeight = lineHeight + "px";
 
-        const strFont = "courier new, monospace";
-        this.domRenderElement.style.fontFamily = strFont;
+        const font = "Fira Code";
+        this.domRenderElement.style.fontFamily = font;
         this.domRenderElement.style.textAlign = "left";
         this.domRenderElement.style.textDecoration = "none";
     }
 
-    getPixelBrightness(pixelArray, x, y) {
+    getPixelColors(pixelArray, x, y) {
         const iOffset = (y * this.width + x) * 4;
+
         return {
             red: pixelArray[iOffset],
             green: pixelArray[iOffset + 1],
@@ -95,21 +94,28 @@ class AsciiEffect {
 
         for (let y = 0; y < height; y += yInc) {
             for (let x = 0; x < width; x += xInc) {
-                const { red, green, blue, alpha } = this.getPixelBrightness(
+                const { red, green, blue, alpha } = this.getPixelColors(
                     pixelArray,
                     x,
                     y
                 );
 
+                const brightness = (red + green + blue) / (255 * 3);
+
                 const pixelCharacter = this.getPixelCharacter(
                     (0.3 * red + 0.59 * green + 0.11 * blue) / 255
                 );
 
-                strChars += pixelCharacter;
+                if (pixelCharacter === " ") {
+                    strChars += " ";
+                    continue;
+                }
+
+                strChars += `<i style="color: rgba(255,255,255,${brightness})")>${pixelCharacter}</i>`;
             }
 
             // Next row
-            strChars += "<br/>";
+            strChars += "\n";
         }
 
         return strChars;
