@@ -8,16 +8,20 @@ const X_SCALE = 1;
 const EMPTY_CHAR = " "; // &nbsp;
 
 class AsciiEffect {
-    constructor(renderer, charSet = " .:-=+*#%@", options = {}, debug = false) {
-        this.resolution = options["resolution"] || 0.15; // Higher for more details
-        this.iScale = options["scale"] || 1;
-        this.strResolution = options["strResolution"] || "low";
+    constructor(
+        renderer,
+        charSet = " .,:;i1tfLCG08@",
+        options = {},
+        debug = false
+    ) {
+        this.resolution = options["resolution"] || 0.15;
+        this.scale = options["scale"] || 1;
 
         this.domRenderElement = document.createElement("div");
         this.domRenderElement.className = "render";
         document.body.appendChild(this.domRenderElement);
 
-        this.charList = charSet; //(charSet || " .,:;i1tfLCG08@").split("");
+        this.charList = charSet.split("");
         this.setAsciiRenderTargetStyle();
 
         this.canvas = document.createElement("canvas");
@@ -29,36 +33,18 @@ class AsciiEffect {
         this.canvas.height = this.height;
     }
 
-    getLetterSpacing() {
-        if (this.strResolution == "low") {
-            switch (this.iScale) {
-                case 1:
-                    return -1;
-                case 2:
-                case 3:
-                    return -2.1;
-                case 4:
-                    return -3.1;
-                case 5:
-                    return -4.15;
-            }
-        }
-
-        return -1;
-    }
-
     setAsciiRenderTargetStyle() {
         this.domRenderElement.style.whiteSpace = "pre";
         this.domRenderElement.style.margin = "0px";
         this.domRenderElement.style.padding = "0px";
 
-        let letterSpacing = this.getLetterSpacing();
+        let letterSpacing = -1;
         this.domRenderElement.style.letterSpacing = letterSpacing + "px";
 
-        const fontSize = (2 / this.resolution) * this.iScale;
+        const fontSize = (2 / this.resolution) * this.scale;
         this.domRenderElement.style.fontSize = fontSize + "px";
 
-        const lineHeight = (2 / this.resolution) * this.iScale;
+        const lineHeight = (2 / this.resolution) * this.scale;
         this.domRenderElement.style.lineHeight = lineHeight + "px";
 
         const font = "Fira Code";
