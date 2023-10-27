@@ -5,7 +5,7 @@
 const Y_SCALE = 2;
 const X_SCALE = 1;
 
-const EMPTY_CHAR = " "; // &nbsp;
+const EMPTY_CHAR = "&nbsp;"; // &nbsp;
 
 class AsciiEffect {
     constructor(
@@ -86,18 +86,20 @@ class AsciiEffect {
                     y
                 );
 
-                const brightness = (red + green + blue) / (255 * 3);
-
                 const pixelCharacter = this.getPixelCharacter(
                     (0.3 * red + 0.59 * green + 0.11 * blue) / 255
                 );
 
-                if (pixelCharacter === " ") {
+                if (pixelCharacter === EMPTY_CHAR) {
                     strChars += " ";
                     continue;
                 }
 
-                strChars += `<i style="color: rgba(255,255,255,${brightness})")>${pixelCharacter}</i>`;
+                const brightness = (red + green + blue) / (255 * 3);
+
+                //const colorStyle = `style="color: rgba(255,255,255,${brightness})")`;
+
+                strChars += `<i>${pixelCharacter}</i>`;
             }
 
             // Next row
