@@ -26,6 +26,10 @@ class AsciiEffect {
 
         this.canvas.width = this.width;
         this.canvas.height = this.height;
+
+        this.canvasContext = this.canvas.getContext("2d", {
+            willReadFrequently: true,
+        });
     }
 
     setAsciiRenderTargetStyle() {
@@ -118,11 +122,16 @@ class AsciiEffect {
     getImagePixelArray(renderer) {
         const renderTarget = renderer.domElement;
 
-        const canvasContext = this.canvas.getContext("2d");
-        canvasContext.clearRect(0, 0, this.width, this.height);
-        canvasContext.drawImage(renderTarget, 0, 0, this.width, this.height);
+        this.canvasContext.clearRect(0, 0, this.width, this.height);
+        this.canvasContext.drawImage(
+            renderTarget,
+            0,
+            0,
+            this.width,
+            this.height
+        );
 
-        const imageData = canvasContext.getImageData(
+        const imageData = this.canvasContext.getImageData(
             0,
             0,
             this.width,
