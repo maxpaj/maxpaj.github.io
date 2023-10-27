@@ -8,12 +8,7 @@ const X_SCALE = 1;
 const EMPTY_CHAR = "&nbsp;"; // &nbsp;
 
 class AsciiEffect {
-    constructor(
-        renderer,
-        charSet = " .,:;i1tfLCG08@",
-        options = {},
-        debug = false
-    ) {
+    constructor(renderer, charSet = " .:-=+*#%@", options = {}, debug = false) {
         this.resolution = options["resolution"] || 0.15;
         this.scale = options["scale"] || 1;
 
