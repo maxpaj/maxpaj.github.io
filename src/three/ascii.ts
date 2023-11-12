@@ -71,11 +71,6 @@ class AsciiEffect {
 
         const lineHeight = (2 / this.resolution) * this.scale;
         this.domRenderElement.style.lineHeight = lineHeight + "px";
-
-        const font = "Fira Code";
-        this.domRenderElement.style.fontFamily = font;
-        this.domRenderElement.style.textAlign = "left";
-        this.domRenderElement.style.textDecoration = "none";
     }
 
     getPixelColors(pixelArray: Uint8ClampedArray, x: number, y: number) {
