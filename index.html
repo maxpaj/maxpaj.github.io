@@ -23,8 +23,8 @@
         import * as THREE from 'three';
         import { AsciiEffect } from 'ascii';
 
-        let camera, controls, scene, renderer, renderTarget, effect;
-        let torus, plane, sphere;
+        let camera, scene, renderer, renderTarget, effect;
+        let torus, sphere, box;
 
         const container = document.querySelector(".three");
 
@@ -45,19 +45,24 @@
             scene.add(pointLight1);
 
             const pointLight2 = new THREE.PointLight(0xffffff, 1, 0, 0);
-            pointLight2.position.set(-500, -500, -500);
+            pointLight2.position.set(-500, 500, 500);
             scene.add(pointLight2);
 
-            torus = new THREE.Mesh(
-                new THREE.TorusGeometry(200, 30, 10, 10),
-                new THREE.MeshPhongMaterial({ flatShading: true })
-            );
+            let shader = new THREE.MeshStandardMaterial({
+                metalness: 1,   // between 0 and 1
+                roughness: 0.5, // between 0 and 1
+            });
+            // new THREE.MeshPhongMaterial({ flatShading: true });
 
+            torus = new THREE.Mesh(new THREE.TorusGeometry(200, 30, 10, 10), shader);
             torus.position.x = -40;
             // scene.add(torus);
 
-            sphere = new THREE.Mesh(new THREE.SphereGeometry(200, 20, 20), new THREE.MeshPhongMaterial({ flatShading: true }));
-            scene.add(sphere);
+            sphere = new THREE.Mesh(new THREE.SphereGeometry(200, 20, 10), shader);
+            // scene.add(sphere);
+
+            box = new THREE.Mesh(new THREE.BoxGeometry(200, 200, 200), shader)
+            scene.add(box);
 
             renderer = new THREE.WebGLRenderer({ alpha: true });
             renderer.setSize(window.innerWidth, window.innerHeight);
@@ -85,9 +90,9 @@
 
         function render() {
             const timer = new Date().getTime();
-            torus.rotation.x = -timer * 0.0003;
-            torus.rotation.z = timer * 0.0002;
-            torus.rotation.y = timer * 0.0002;
+            box.rotation.x = -timer * 0.0003;
+            box.rotation.z = timer * 0.0002;
+            box.rotation.y = timer * 0.0002;
 
             sphere.rotation.x = timer * 0.0003;
             sphere.rotation.z = timer * 0.0002;
