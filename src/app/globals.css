@@ -2,18 +2,15 @@
 @tailwind components;
 @tailwind utilities;
 
-@import url("https://fonts.googleapis.com/css2?family=Fira+Code:wght@200;300;500;600&family=Source+Sans+Pro:ital,wght@0,400;1,600&display=swap");
-
 :root {
-    --font: "Fira Code", Arial, sans-serif;
-
     --accent-color: #000000;
     --text-color: #c3c3c3;
     --foreground-rgb: 0, 0, 0;
 
     --background-start-rgb: 214, 219, 220;
     --background-end-rgb: 255, 255, 255;
-    --background: #000;
+    --background: linear-gradient(45deg, #4d4d4d -50%, #000 50%, #777 150%),
+        #000;
 }
 
 *,
@@ -41,14 +38,6 @@ body {
     color: var(--text-color);
 }
 
-main {
-    max-width: 600px;
-    width: 100%;
-    position: absolute;
-    z-index: 1;
-    top: 0;
-}
-
 .logo {
     height: 2rem;
     width: 2rem;
@@ -57,12 +46,6 @@ main {
     color: var(--text-color);
     top: 0;
     left: 0;
-}
-
-.three {
-    position: fixed;
-    z-index: 0;
-    top: 0;
 }
 
 svg {

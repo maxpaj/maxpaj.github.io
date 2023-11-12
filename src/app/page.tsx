@@ -4,7 +4,7 @@ import logo from "@/assets/logo.svg";
 export default function Home() {
     return (
         <>
-            <main className="flex min-h-screen flex-col p-8">
+            <article className="absolute z-10 flex max-w-screen-sm flex-col p-8">
                 <div>
                     <Image
                         src={logo}
@@ -13,6 +13,7 @@ export default function Home() {
                         width={28}
                         className="mb-12"
                     />
+
                     <section>
                         <p>
                             I am a freelance software developer who thrives on
@@ -22,7 +23,7 @@ export default function Home() {
                         </p>
                     </section>
                 </div>
-            </main>
+            </article>
         </>
     );
 }

@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Fira_Code } from "next/font/google";
 import "./globals.css";
-import { ThreeBackground } from "@/three";
+import { ThreeBackground } from "@/components/three";
 
 const fira = Fira_Code({ subsets: ["latin"] });
 
@@ -18,9 +18,8 @@ export default function RootLayout({
     return (
         <html lang="en">
             <body className={fira.className}>
-                {children}
+                <main>{children}</main>
                 <ThreeBackground />
-                <div></div>
             </body>
         </html>
     );

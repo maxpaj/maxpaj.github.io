@@ -13,7 +13,7 @@ import {
     WebGLRenderTarget,
 } from "three";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
-import { AsciiEffect } from "@/three/ascii";
+import { AsciiEffect } from "@/components/three/ascii";
 
 let camera: PerspectiveCamera,
     scene: Scene,
@@ -22,7 +22,9 @@ let camera: PerspectiveCamera,
     orbitControls: OrbitControls,
     box: Mesh,
     effect: AsciiEffect,
-    stopped = true;
+    stopped = true,
+    isDragging = false,
+    lastRender = new Date().getTime();
 
 export function ThreeBackground() {
     const refContainer = useRef<HTMLDivElement>(null);
@@ -30,12 +32,18 @@ export function ThreeBackground() {
     useEffect(() => {
         function init() {
             console.log("starting...");
+
+            if (refContainer.current === null) {
+                throw new Error("Ref empty");
+            }
+
             camera = new PerspectiveCamera(
                 70,
                 window.innerWidth / window.innerHeight,
                 1,
                 1000
             );
+
             camera.position.y = 100;
             camera.position.z = 500;
             camera.position.x = 0;
@@ -62,31 +70,34 @@ export function ThreeBackground() {
             renderer = new WebGLRenderer({ alpha: true });
             renderer.setSize(window.innerWidth, window.innerHeight);
 
+            // Clear container
+            refContainer.current.innerHTML = "";
+
             effect = new AsciiEffect(
                 " .:-+*=%@#",
                 {
-                    invert: true,
-                    alpha: true,
+                    debug: false,
+                    enabled: true,
                 },
-                refContainer.current!
+                refContainer.current
             );
 
             effect.setSize(window.innerWidth, window.innerHeight);
 
-            if (refContainer.current === null) {
-                throw new Error("Ref empty");
-            }
-
-            // Clear container
-            refContainer.current.innerHTML = "";
-
             // Append the canvas
             refContainer.current.appendChild(effect.domRenderElement);
 
-            orbitControls = new OrbitControls(camera, renderer.domElement);
-            orbitControls.minDistance = 0.2;
-            orbitControls.maxDistance = 1.5;
+            orbitControls = new OrbitControls(camera, refContainer.current);
+            orbitControls.minDistance = 500;
+            orbitControls.maxDistance = 500;
             orbitControls.enableDamping = true;
+            orbitControls.addEventListener("start", () => {
+                isDragging = true;
+            });
+
+            orbitControls.addEventListener("end", () => {
+                isDragging = false;
+            });
 
             window.addEventListener("resize", onWindowResize);
 
@@ -115,10 +126,14 @@ export function ThreeBackground() {
         }
 
         function render() {
-            const timer = new Date().getTime();
-            box.rotation.x = -timer * 0.0003;
-            box.rotation.z = timer * 0.0002;
-            box.rotation.y = timer * 0.0002;
+            const delta = new Date().getTime() - lastRender;
+            lastRender = new Date().getTime();
+
+            if (!isDragging) {
+                box.rotation.x -= -delta * 0.0003;
+                box.rotation.z += delta * 0.0002;
+                box.rotation.y += delta * 0.0002;
+            }
 
             renderer.render(scene, camera);
             effect.render(renderer);
@@ -135,5 +150,5 @@ export function ThreeBackground() {
         };
     }, []);
 
-    return <div className="font-mono" ref={refContainer}></div>;
+    return <div className="absolute top-0 select-none" ref={refContainer} />;
 }
