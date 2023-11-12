@@ -30,7 +30,6 @@ export function ThreeBackground() {
     useEffect(() => {
         function init() {
             console.log("starting...");
-            stopped = false;
             camera = new PerspectiveCamera(
                 70,
                 window.innerWidth / window.innerHeight,
@@ -64,7 +63,6 @@ export function ThreeBackground() {
             renderer.setSize(window.innerWidth, window.innerHeight);
 
             effect = new AsciiEffect(
-                renderer,
                 " .:-+*=%@#",
                 {
                     invert: true,
@@ -91,6 +89,8 @@ export function ThreeBackground() {
             orbitControls.enableDamping = true;
 
             window.addEventListener("resize", onWindowResize);
+
+            stopped = false;
         }
 
         function onWindowResize() {

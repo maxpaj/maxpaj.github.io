@@ -21,6 +21,8 @@ class AsciiEffect {
     scale: number;
     charList: string[];
 
+    currentRender: Uint8Array;
+
     domRenderElement: HTMLElement;
     canvas: HTMLCanvasElement;
     canvasContext: CanvasRenderingContext2D | null;
@@ -29,7 +31,6 @@ class AsciiEffect {
     height: number = 0;
 
     constructor(
-        renderer: WebGLRenderer,
         charSet = " .:-=+*#%@",
         options: AsciiEffectOptions = {},
         attachElement: HTMLElement = document.body,
@@ -50,12 +51,11 @@ class AsciiEffect {
             attachElement.appendChild(this.canvas);
         }
 
-        this.canvas.width = this.width;
-        this.canvas.height = this.height;
-
         this.canvasContext = this.canvas.getContext("2d", {
             willReadFrequently: true,
         });
+
+        this.currentRender = new Uint8Array(0);
     }
 
     setAsciiRenderTargetStyle() {
@@ -97,12 +97,16 @@ class AsciiEffect {
     }
 
     // Render ASCII based on image pixel data
-    renderAscii(pixelArray: Uint8ClampedArray, width: number, height: number) {
-        let strChars = "";
-
+    renderAscii(
+        pixelArray: Uint8ClampedArray,
+        width: number,
+        height: number,
+        renderFunction: (x: number, y: number, char: string) => void
+    ) {
         const yInc = Math.floor(Y_SCALE * 1);
         const xInc = Math.floor(X_SCALE * 1);
 
+        // Skip over pixels depending on the resolution of the ASCII rendered
         for (let y = 0; y < height; y += yInc) {
             for (let x = 0; x < width; x += xInc) {
                 const { red, green, blue, alpha } = this.getPixelColors(
@@ -116,26 +120,46 @@ class AsciiEffect {
                 );
 
                 if (pixelCharacter === EMPTY_CHAR) {
-                    strChars += " ";
+                    renderFunction(
+                        Math.floor(x / xInc),
+                        Math.floor(y / yInc),
+                        " "
+                    );
                     continue;
                 }
 
-                strChars += `<i>${pixelCharacter}</i>`;
+                // Render out the ASCII
+                renderFunction(
+                    Math.floor(x / xInc),
+                    Math.floor(y / yInc),
+                    pixelCharacter
+                );
             }
-
-            // Next row
-            strChars += "\n";
         }
-
-        return strChars;
     }
 
     setSize(width: number, height: number) {
+        this.currentRender = new Uint8Array(width * height);
+
         this.width = Math.floor(width * this.resolution);
         this.height = Math.floor(height * this.resolution);
 
         this.domRenderElement.style.width = width.toString();
         this.domRenderElement.style.height = height.toString();
+
+        // Construct the tree of rows and cols
+        this.domRenderElement.innerHTML = new Array(this.height)
+            .fill(0)
+            .map(
+                (_) =>
+                    "<div>" +
+                    new Array(this.width)
+                        .fill(0)
+                        .map((_) => "<i></i>")
+                        .join("") +
+                    "</div>"
+            )
+            .join("");
 
         this.canvas.width = this.width;
         this.canvas.height = this.height;
@@ -198,16 +222,23 @@ class AsciiEffect {
         };
     }
 
-    updateDOM(ascii: string) {
-        this.domRenderElement.innerHTML = ascii;
-    }
-
     render(renderer: WebGLRenderer) {
-        // Get rendered pixels from render target'
+        // Get rendered pixels from render target
         const { buffer, height, width } = this.getImagePixelArray(renderer);
+        const children = this.domRenderElement.childNodes;
 
-        const renderedAscii = this.renderAscii(buffer, width, height);
-        this.updateDOM(renderedAscii);
+        this.renderAscii(buffer, width, height, (x, y, char) => {
+            const child = children.item(y).childNodes.item(x);
+            if (!child) {
+                return;
+            }
+
+            if (child.textContent === char) {
+                return;
+            }
+
+            child.textContent = char;
+        });
     }
 }
 
