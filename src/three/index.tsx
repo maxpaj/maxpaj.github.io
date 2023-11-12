@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-
 import {
     Scene,
     Mesh,
@@ -9,21 +8,18 @@ import {
     Color,
     PerspectiveCamera,
     MeshStandardMaterial,
-    TorusGeometry,
-    SphereGeometry,
     BoxGeometry,
     WebGLRenderer,
     WebGLRenderTarget,
 } from "three";
-
+import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { AsciiEffect } from "@/three/ascii";
 
 let camera: PerspectiveCamera,
     scene: Scene,
     renderer: WebGLRenderer,
     renderTarget: WebGLRenderTarget,
-    torus: Mesh,
-    sphere: Mesh,
+    orbitControls: OrbitControls,
     box: Mesh,
     effect: AsciiEffect,
     stopped = true;
@@ -60,14 +56,6 @@ export function ThreeBackground() {
                 metalness: 1, // between 0 and 1
                 roughness: 0.5, // between 0 and 1
             });
-            // new MeshPhongMaterial({ flatShading: true });
-
-            torus = new Mesh(new TorusGeometry(200, 30, 10, 10), shader);
-            torus.position.x = -40;
-            // scene.add(torus);
-
-            sphere = new Mesh(new SphereGeometry(200, 20, 10), shader);
-            // scene.add(sphere);
 
             box = new Mesh(new BoxGeometry(200, 200, 200), shader);
             scene.add(box);
@@ -75,12 +63,15 @@ export function ThreeBackground() {
             renderer = new WebGLRenderer({ alpha: true });
             renderer.setSize(window.innerWidth, window.innerHeight);
 
-            // document.body.appendChild(renderer.domElement);
-            // renderTarget = new WebGLRenderTarget(window.innerWidth, window.innerHeight);
-            effect = new AsciiEffect(renderer, " .:-+*=%@#", {
-                invert: true,
-                alpha: true,
-            });
+            effect = new AsciiEffect(
+                renderer,
+                " .:-+*=%@#",
+                {
+                    invert: true,
+                    alpha: true,
+                },
+                refContainer.current!
+            );
 
             effect.setSize(window.innerWidth, window.innerHeight);
 
@@ -93,6 +84,11 @@ export function ThreeBackground() {
 
             // Append the canvas
             refContainer.current.appendChild(effect.domRenderElement);
+
+            orbitControls = new OrbitControls(camera, renderer.domElement);
+            orbitControls.minDistance = 0.2;
+            orbitControls.maxDistance = 1.5;
+            orbitControls.enableDamping = true;
 
             window.addEventListener("resize", onWindowResize);
         }
@@ -124,9 +120,6 @@ export function ThreeBackground() {
             box.rotation.z = timer * 0.0002;
             box.rotation.y = timer * 0.0002;
 
-            sphere.rotation.x = timer * 0.0003;
-            sphere.rotation.z = timer * 0.0002;
-
             renderer.render(scene, camera);
             effect.render(renderer);
         }
@@ -142,5 +135,5 @@ export function ThreeBackground() {
         };
     }, []);
 
-    return <div ref={refContainer}></div>;
+    return <div className="font-mono" ref={refContainer}></div>;
 }

@@ -32,21 +32,22 @@ class AsciiEffect {
         renderer: WebGLRenderer,
         charSet = " .:-=+*#%@",
         options: AsciiEffectOptions = {},
-        debug = false
+        attachElement: HTMLElement = document.body,
+        debug = true
     ) {
         this.resolution = options.resolution || 0.15;
         this.scale = options.scale || 1;
 
         this.domRenderElement = document.createElement("div");
         this.domRenderElement.className = "render";
-        document.body.appendChild(this.domRenderElement);
+        attachElement.appendChild(this.domRenderElement);
 
         this.charList = charSet.split("");
         this.setAsciiRenderTargetStyle();
 
         this.canvas = document.createElement("canvas");
         if (debug) {
-            document.body.appendChild(this.canvas);
+            attachElement.appendChild(this.canvas);
         }
 
         this.canvas.width = this.width;

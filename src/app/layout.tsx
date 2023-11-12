@@ -20,6 +20,7 @@ export default function RootLayout({
             <body className={fira.className}>
                 {children}
                 <ThreeBackground />
+                <div></div>
             </body>
         </html>
     );
