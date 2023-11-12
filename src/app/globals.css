@@ -1,15 +1,19 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 @import url("https://fonts.googleapis.com/css2?family=Fira+Code:wght@200;300;500;600&family=Source+Sans+Pro:ital,wght@0,400;1,600&display=swap");
 
 :root {
-    --background: linear-gradient(50deg, #0f0f0f 50%, #4b4332 100%);
-
-    --accent-color: #c3c3c3;
-    --text-color: #c3c3c3;
-
     --font: "Fira Code", Arial, sans-serif;
-    --padding-left: 10vw;
-    --tilt: 3.5deg;
-    --max-width: 1200px;
+
+    --accent-color: #000000;
+    --text-color: #c3c3c3;
+    --foreground-rgb: 0, 0, 0;
+
+    --background-start-rgb: 214, 219, 220;
+    --background-end-rgb: 255, 255, 255;
+    --background: linear-gradient(50deg, #0f0f0f 50%, #4b4332 100%);
 }
 
 *,
@@ -19,7 +23,6 @@
 }
 
 html {
-    font-family: var(--font);
     color: var(--text-color);
     scroll-behavior: smooth;
 }
@@ -31,14 +34,16 @@ body {
     margin: 0;
     font-size: 14px;
     overflow-x: hidden;
+}
+
+body {
     background: var(--background);
     color: var(--text-color);
 }
 
 main {
+    max-width: 600px;
     width: 100%;
-    padding: 7rem 2rem;
-    max-width: 500px;
     position: absolute;
     z-index: 1;
     top: 0;
@@ -83,4 +88,12 @@ a {
 
 i {
     font-style: normal;
+}
+
+@media (prefers-color-scheme: dark) {
+    :root {
+        --foreground-rgb: 255, 255, 255;
+        --background-start-rgb: 0, 0, 0;
+        --background-end-rgb: 0, 0, 0;
+    }
 }

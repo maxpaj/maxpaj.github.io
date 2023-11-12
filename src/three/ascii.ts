@@ -2,15 +2,40 @@
  * Ascii generation is based on https://github.com/hassadee/jsascii/blob/master/jsascii.js
  */
 
+import { WebGLRenderer } from "three";
+
 const Y_SCALE = 2;
 const X_SCALE = 1;
 
 const EMPTY_CHAR = "&nbsp;"; // &nbsp;
 
+type AsciiEffectOptions = {
+    resolution?: number;
+    scale?: number;
+    invert?: boolean;
+    alpha?: boolean;
+};
+
 class AsciiEffect {
-    constructor(renderer, charSet = " .:-=+*#%@", options = {}, debug = false) {
-        this.resolution = options["resolution"] || 0.15;
-        this.scale = options["scale"] || 1;
+    resolution: number;
+    scale: number;
+    charList: string[];
+
+    domRenderElement: HTMLElement;
+    canvas: HTMLCanvasElement;
+    canvasContext: CanvasRenderingContext2D | null;
+
+    width: number = 0;
+    height: number = 0;
+
+    constructor(
+        renderer: WebGLRenderer,
+        charSet = " .:-=+*#%@",
+        options: AsciiEffectOptions = {},
+        debug = false
+    ) {
+        this.resolution = options.resolution || 0.15;
+        this.scale = options.scale || 1;
 
         this.domRenderElement = document.createElement("div");
         this.domRenderElement.className = "render";
@@ -52,7 +77,7 @@ class AsciiEffect {
         this.domRenderElement.style.textDecoration = "none";
     }
 
-    getPixelColors(pixelArray, x, y) {
+    getPixelColors(pixelArray: Uint8ClampedArray, x: number, y: number) {
         const iOffset = (y * this.width + x) * 4;
 
         return {
@@ -63,7 +88,7 @@ class AsciiEffect {
         };
     }
 
-    getPixelCharacter(brightness) {
+    getPixelCharacter(brightness: number) {
         const charIndex = Math.floor(brightness * this.charList.length);
         const pixelChar = this.charList[charIndex];
         if (pixelChar === undefined || pixelChar == " ") return EMPTY_CHAR;
@@ -71,7 +96,7 @@ class AsciiEffect {
     }
 
     // Render ASCII based on image pixel data
-    renderAscii(pixelArray, width, height) {
+    renderAscii(pixelArray: Uint8ClampedArray, width: number, height: number) {
         let strChars = "";
 
         const yInc = Math.floor(Y_SCALE * 1);
@@ -94,10 +119,6 @@ class AsciiEffect {
                     continue;
                 }
 
-                const brightness = (red + green + blue) / (255 * 3);
-
-                //const colorStyle = `style="color: rgba(255,255,255,${brightness})")`;
-
                 strChars += `<i>${pixelCharacter}</i>`;
             }
 
@@ -108,19 +129,23 @@ class AsciiEffect {
         return strChars;
     }
 
-    setSize(width, height) {
+    setSize(width: number, height: number) {
         this.width = Math.floor(width * this.resolution);
         this.height = Math.floor(height * this.resolution);
 
-        this.domRenderElement.style.width = width;
-        this.domRenderElement.style.height = height;
+        this.domRenderElement.style.width = width.toString();
+        this.domRenderElement.style.height = height.toString();
 
         this.canvas.width = this.width;
         this.canvas.height = this.height;
     }
 
-    getImagePixelArray(renderer) {
+    getImagePixelArray(renderer: WebGLRenderer) {
         const renderTarget = renderer.domElement;
+
+        if (this.canvasContext == null) {
+            throw new Error("Canvas context does not exist");
+        }
 
         this.canvasContext.clearRect(0, 0, this.width, this.height);
         this.canvasContext.drawImage(
@@ -145,8 +170,12 @@ class AsciiEffect {
         };
     }
 
-    getImagePixelArrayRenderTarget(renderer) {
+    getImagePixelArrayRenderTarget(renderer: WebGLRenderer) {
         const renderTarget = renderer.getRenderTarget();
+        if (renderTarget == null) {
+            throw new Error("No render target available");
+        }
+
         const buffer = new Uint8Array(
             renderTarget.width * renderTarget.height * 4
         );
@@ -168,16 +197,16 @@ class AsciiEffect {
         };
     }
 
-    updateDOM(ascii) {
+    updateDOM(ascii: string) {
         this.domRenderElement.innerHTML = ascii;
     }
 
-    render(renderer) {
+    render(renderer: WebGLRenderer) {
         // Get rendered pixels from render target'
         const { buffer, height, width } = this.getImagePixelArray(renderer);
 
         const renderedAscii = this.renderAscii(buffer, width, height);
-        this.updateDOM(renderedAscii, width, height);
+        this.updateDOM(renderedAscii);
     }
 }
 
