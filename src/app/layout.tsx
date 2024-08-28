@@ -1,7 +1,7 @@
+import { ThreeBackground } from "@/components/three";
 import type { Metadata } from "next";
 import { Fira_Code } from "next/font/google";
 import "./globals.css";
-import { ThreeBackground } from "@/components/three";
 
 const fira = Fira_Code({ subsets: ["latin"] });
 

@@ -1,19 +1,19 @@
 "use client";
 
+import { AsciiEffect } from "@/components/three/ascii";
 import { useEffect, useRef } from "react";
 import {
-    Scene,
-    Mesh,
-    PointLight,
-    Color,
-    PerspectiveCamera,
-    MeshStandardMaterial,
     BoxGeometry,
+    Color,
+    Mesh,
+    MeshStandardMaterial,
+    PerspectiveCamera,
+    PointLight,
+    Scene,
     WebGLRenderer,
     WebGLRenderTarget,
 } from "three";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
-import { AsciiEffect } from "@/components/three/ascii";
 
 let camera: PerspectiveCamera,
     scene: Scene,
@@ -73,16 +73,9 @@ export function ThreeBackground() {
             // Clear container
             refContainer.current.innerHTML = "";
 
-            effect = new AsciiEffect(
-                " .:-+*=%@#",
-                {
-                    debug: false,
-                    enabled: true,
-                },
-                refContainer.current
-            );
+            effect = new AsciiEffect(" .:-+*=%@#", {}, refContainer.current);
 
-            effect.setSize(window.innerWidth, window.innerHeight);
+            effect.setWindowSize(window.innerWidth, window.innerHeight);
 
             // Append the canvas
             refContainer.current.appendChild(effect.domRenderElement);
@@ -102,21 +95,22 @@ export function ThreeBackground() {
             window.addEventListener("resize", onWindowResize);
 
             stopped = false;
+
+            renderer.setAnimationLoop(step);
         }
 
         function onWindowResize() {
             camera.aspect = window.innerWidth / window.innerHeight;
             camera.updateProjectionMatrix();
             renderer.setSize(window.innerWidth, window.innerHeight);
-            effect.setSize(window.innerWidth, window.innerHeight);
+            effect.setWindowSize(window.innerWidth, window.innerHeight);
         }
 
-        function animate() {
+        function step(timeElapsed: number = 0) {
             if (stopped) {
                 return;
             }
 
-            requestAnimationFrame(() => animate());
             render();
         }
 
@@ -139,16 +133,23 @@ export function ThreeBackground() {
             effect.render(renderer);
         }
 
+        if (renderer) {
+            return;
+        }
+
         console.log("init!");
 
         init();
-        animate();
 
         return () => {
             console.log("stop!");
-            stopAnimate();
         };
     }, []);
 
-    return <div className="absolute top-0 select-none" ref={refContainer} />;
+    return (
+        <div
+            className="absolute top-0 select-none w-full h-full d-flex justify-center overflow-hidden"
+            ref={refContainer}
+        />
+    );
 }
