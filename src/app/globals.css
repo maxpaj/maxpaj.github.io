@@ -31,6 +31,7 @@ body {
     margin: 0;
     font-size: 14px;
     overflow-x: hidden;
+    line-height: 1rem;
 }
 
 body {
@@ -59,10 +60,7 @@ svg:hover {
 }
 
 p {
-    font-size: 1rem;
-    margin: 0 0 1rem 0;
-    line-height: 1.5rem;
-    font-weight: 100;
+    letter-spacing: 0.125rem;
 }
 
 a {

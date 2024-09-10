@@ -7,8 +7,10 @@ import { WebGLRenderer } from "three";
 const Y_SCALE = 2;
 const X_SCALE = 1;
 
-const CELL_SIZE_WIDTH = 16;
-const CELL_SIZE_HEIGHT = 21;
+const CELL_SIZE_WIDTH = 14;
+const CELL_SIZE_HEIGHT = 18;
+
+const DEFAULT_CHAR_SET = " .:-=+*#%@";
 
 const DEFAULT_BUFFER_WIDTH = 500;
 const DEFAULT_BUFFER_HEIGHT = 500;
@@ -16,6 +18,7 @@ const DEFAULT_BUFFER_HEIGHT = 500;
 type AsciiEffectOptions = {
     debug?: boolean;
     enabled?: boolean;
+    charSet?: string;
 };
 
 class AsciiEffect {
@@ -45,57 +48,35 @@ class AsciiEffect {
     tableWidth: number = 0;
 
     constructor(
-        charSet = " .:-=+*#%@",
-        { debug, enabled }: AsciiEffectOptions = {},
+        { debug, charSet, enabled }: AsciiEffectOptions = {
+            charSet: DEFAULT_CHAR_SET,
+        },
         attachElement: HTMLElement = document.body
     ) {
         this.debug = debug || true; // TODO: set to false
-        this.charList = charSet.split("");
+        this.charList =
+            charSet === undefined
+                ? DEFAULT_CHAR_SET.split("")
+                : charSet.split("");
         this.enabled = enabled !== false;
 
         this.domRenderElement = document.createElement("table");
         this.domRenderElement.className = "ascii";
-        this.setAsciiRenderTargetStyle(this.domRenderElement);
         attachElement.appendChild(this.domRenderElement);
 
         this.canvas = document.createElement("canvas");
+        this.canvas.className = "ascii-debug";
         this.canvas.width = DEFAULT_BUFFER_WIDTH;
         this.canvas.height = DEFAULT_BUFFER_HEIGHT;
 
         if (debug) {
-            this.canvas.style.position = "fixed";
-            this.canvas.style.bottom = "0";
-            this.canvas.style.border = "1px solid red";
             attachElement.appendChild(this.canvas);
         }
 
         this.canvasContext = this.canvas.getContext("2d");
     }
 
-    setAsciiRenderTargetStyle(asciiRenderElement: HTMLElement) {
-        asciiRenderElement.style.whiteSpace = "pre";
-        asciiRenderElement.style.margin = "0px";
-        asciiRenderElement.style.padding = "0px";
-        asciiRenderElement.style.maxHeight = "100vh";
-        asciiRenderElement.style.overflow = "hidden";
-        asciiRenderElement.style.width = "100%";
-        asciiRenderElement.style.height = "100%";
-        asciiRenderElement.style.tableLayout = "fixed";
-
-        let letterSpacing = 5;
-        asciiRenderElement.style.letterSpacing = letterSpacing + "px";
-
-        const fontSize = CELL_SIZE_WIDTH;
-        asciiRenderElement.style.fontSize = fontSize + "px";
-
-        const lineHeight = CELL_SIZE_HEIGHT;
-        asciiRenderElement.style.lineHeight = lineHeight + "px";
-    }
-
     setWindowSize(windowWidth: number, windowHeight: number) {
-        this.domRenderElement.style.width = `${windowWidth.toString()}px`;
-        this.domRenderElement.style.height = `${windowHeight.toString()}px`;
-
         this.windowWidth = windowWidth;
         this.windowHeight = windowHeight;
 

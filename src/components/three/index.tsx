@@ -3,22 +3,30 @@
 import { AsciiEffect } from "@/components/three/ascii";
 import { useEffect, useRef } from "react";
 import {
+    AmbientLight,
     BoxGeometry,
     Color,
     Mesh,
     MeshStandardMaterial,
     PerspectiveCamera,
     PointLight,
+    PointLightHelper,
     Scene,
     WebGLRenderer,
     WebGLRenderTarget,
 } from "three";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
+import "./ascii.css";
+
+const DEBUG = false;
 
 let camera: PerspectiveCamera,
     scene: Scene,
     renderer: WebGLRenderer,
     renderTarget: WebGLRenderTarget,
+    pointLight1: PointLight,
+    pointLight2: PointLight,
+    pointLight3: PointLight,
     orbitControls: OrbitControls,
     box: Mesh,
     effect: AsciiEffect,
@@ -44,24 +52,61 @@ export function ThreeBackground() {
                 1000
             );
 
-            camera.position.y = 100;
-            camera.position.z = 500;
-            camera.position.x = 0;
+            camera.position.y = 0;
+            camera.position.z = 300;
+            camera.position.x = 300;
 
             scene = new Scene();
             scene.background = new Color(0, 0, 0);
 
-            const pointLight1 = new PointLight(0xffffff, 3, 0, 0);
+            const pointLightHelperSphereSize = 3;
+
+            scene.add(new AmbientLight(0xff00ff, 1));
+
+            pointLight1 = new PointLight(0xffffff, 3, 0, 0);
             pointLight1.position.set(500, 500, 0);
             scene.add(pointLight1);
 
-            const pointLight2 = new PointLight(0xffffff, 1, 0, 0);
+            if (DEBUG) {
+                scene.add(
+                    new PointLightHelper(
+                        pointLight1,
+                        pointLightHelperSphereSize
+                    )
+                );
+            }
+
+            pointLight2 = new PointLight(0xffffff, 1, 0, 0);
             pointLight2.position.set(-500, 500, 500);
             scene.add(pointLight2);
+
+            if (DEBUG) {
+                scene.add(
+                    new PointLightHelper(
+                        pointLight2,
+                        pointLightHelperSphereSize
+                    )
+                );
+            }
+
+            pointLight3 = new PointLight(0xffffff, 1, 0, 0);
+            pointLight3.position.set(-500, 500, 500);
+            scene.add(pointLight3);
+
+            if (DEBUG) {
+                scene.add(
+                    new PointLightHelper(
+                        pointLight3,
+                        pointLightHelperSphereSize
+                    )
+                );
+            }
 
             let shader = new MeshStandardMaterial({
                 metalness: 1, // between 0 and 1
                 roughness: 0.5, // between 0 and 1
+                emissive: "#ffffff",
+                emissiveIntensity: 0.025,
             });
 
             box = new Mesh(new BoxGeometry(200, 200, 200), shader);
@@ -73,7 +118,7 @@ export function ThreeBackground() {
             // Clear container
             refContainer.current.innerHTML = "";
 
-            effect = new AsciiEffect(" .:-+*=%@#", {}, refContainer.current);
+            effect = new AsciiEffect({ debug: DEBUG }, refContainer.current);
 
             effect.setWindowSize(window.innerWidth, window.innerHeight);
 
@@ -81,9 +126,6 @@ export function ThreeBackground() {
             refContainer.current.appendChild(effect.domRenderElement);
 
             orbitControls = new OrbitControls(camera, refContainer.current);
-            orbitControls.minDistance = 500;
-            orbitControls.maxDistance = 500;
-            orbitControls.enableDamping = true;
             orbitControls.addEventListener("start", () => {
                 isDragging = true;
             });
@@ -123,7 +165,7 @@ export function ThreeBackground() {
             const delta = new Date().getTime() - lastRender;
             lastRender = new Date().getTime();
 
-            if (!isDragging) {
+            if (!isDragging && !DEBUG) {
                 box.rotation.x -= -delta * 0.0003;
                 box.rotation.z += delta * 0.0002;
                 box.rotation.y += delta * 0.0002;
