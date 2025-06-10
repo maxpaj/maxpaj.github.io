@@ -1,7 +1,7 @@
 "use client";
 
 import { ThreeAsciiEffect } from "@/components/ascii/three-ascii-effect";
-import { useEffect, useRef } from "react";
+import { useCallback, useEffect, useRef } from "react";
 import {
     AmbientLight,
     BoxGeometry,
@@ -41,13 +41,13 @@ interface AsciiEffectProps {
 export function AsciiEffect({ width = 20, height = 20 }: AsciiEffectProps) {
     const refContainer = useRef<HTMLDivElement>(null);
 
-    function step(timeElapsed: number = 0) {
+    const step = useCallback((timeElapsed: number = 0) => {
         if (stopped) {
             return;
         }
 
         render();
-    }
+    }, []);
 
     function stopAnimate() {
         console.log("stopped.");
@@ -160,7 +160,7 @@ export function AsciiEffect({ width = 20, height = 20 }: AsciiEffectProps) {
         return () => {
             console.log("stop!");
         };
-    }, []);
+    }, [height, step, width]);
 
     return <div ref={refContainer} />;
 }
