@@ -7,7 +7,7 @@ import { WebGLRenderer } from "three";
 const Y_SCALE = 2;
 const X_SCALE = 1;
 
-const CELL_SIZE_WIDTH = 14;
+const CELL_SIZE_WIDTH = 20;
 const CELL_SIZE_HEIGHT = 18;
 
 const DEFAULT_CHAR_SET = " .:-=+*#%@";
@@ -59,6 +59,7 @@ export class ThreeAsciiEffect {
 
         this.domRenderElement = document.createElement("table");
         this.domRenderElement.className = "ascii";
+        this.domRenderElement.appendChild(document.createElement("td"));
         attachElement.appendChild(this.domRenderElement);
 
         this.canvas = document.createElement("canvas");
@@ -76,23 +77,6 @@ export class ThreeAsciiEffect {
     setEffectSize(width: number, height: number) {
         this.tableHeight = width;
         this.tableWidth = height;
-
-        // Construct the tree of rows and cols
-        this.domRenderElement.innerHTML = new Array(this.tableHeight)
-            .fill(0)
-            .map(
-                (_) =>
-                    "<tr>" +
-                    new Array(this.tableWidth)
-                        .fill(0)
-                        .map(
-                            (_) =>
-                                `<td style="overflow: hidden; width: ${CELL_SIZE_WIDTH}px; height: ${CELL_SIZE_HEIGHT}px">0</td>`
-                        )
-                        .join("") +
-                    "</tr>"
-            )
-            .join("");
     }
 
     getImagePixelArray(renderer: WebGLRenderer) {
