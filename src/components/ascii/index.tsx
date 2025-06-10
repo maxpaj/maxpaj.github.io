@@ -17,7 +17,7 @@ import {
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import "./index.css";
 
-const DEBUG = true;
+const DEBUG = false;
 
 let camera: PerspectiveCamera,
     scene: Scene,
@@ -84,7 +84,7 @@ export function AsciiEffect({ width = 20, height = 20 }: AsciiEffectProps) {
                 throw new Error("Ref empty");
             }
 
-            camera = new PerspectiveCamera(70, 1, 1, 1000);
+            camera = new PerspectiveCamera(50, 1, 1, 1000);
 
             camera.position.y = 0;
             camera.position.z = 300;

@@ -77,10 +77,6 @@ svg:hover {
     fill: var(--accent-color);
 }
 
-p {
-    letter-spacing: 0.125rem;
-}
-
 a {
     text-decoration: none;
 }
