@@ -1,18 +1,11 @@
-import logo from "@/assets/logo.svg";
-import Image from "next/image";
+import { AsciiEffect } from "@/components/ascii";
 
 export default function Home() {
     return (
         <>
-            <section className="absolute z-10 flex max-w-screen-sm flex-col p-4">
-                <div>
-                    <Image
-                        src={logo}
-                        priority
-                        alt="Logo"
-                        width={28}
-                        className="mb-6"
-                    />
+            <section className="absolute z-10 flex max-w-screen-md flex-col p-8 xs:flex-wrap">
+                <div className="flex gap-2 items-center">
+                    <AsciiEffect width={30} height={30} />
 
                     <section>
                         <p>

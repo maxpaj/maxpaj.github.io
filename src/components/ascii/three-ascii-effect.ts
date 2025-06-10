@@ -12,8 +12,8 @@ const CELL_SIZE_HEIGHT = 18;
 
 const DEFAULT_CHAR_SET = " .:-=+*#%@";
 
-const DEFAULT_BUFFER_WIDTH = 500;
-const DEFAULT_BUFFER_HEIGHT = 500;
+const DEFAULT_BUFFER_WIDTH = 200;
+const DEFAULT_BUFFER_HEIGHT = 200;
 
 type AsciiEffectOptions = {
     debug?: boolean;
@@ -21,7 +21,7 @@ type AsciiEffectOptions = {
     charSet?: string;
 };
 
-class AsciiEffect {
+export class ThreeAsciiEffect {
     /**
      * Enable/disable debug mode
      */
@@ -40,9 +40,6 @@ class AsciiEffect {
     domRenderElement: HTMLElement;
     canvas: HTMLCanvasElement;
     canvasContext: CanvasRenderingContext2D | null;
-
-    windowWidth: number = 0;
-    windowHeight: number = 0;
 
     tableHeight: number = 0;
     tableWidth: number = 0;
@@ -70,18 +67,15 @@ class AsciiEffect {
         this.canvas.height = DEFAULT_BUFFER_HEIGHT;
 
         if (debug) {
-            attachElement.appendChild(this.canvas);
+            document.body.appendChild(this.canvas);
         }
 
         this.canvasContext = this.canvas.getContext("2d");
     }
 
-    setWindowSize(windowWidth: number, windowHeight: number) {
-        this.windowWidth = windowWidth;
-        this.windowHeight = windowHeight;
-
-        this.tableHeight = Math.floor(windowHeight / CELL_SIZE_HEIGHT);
-        this.tableWidth = Math.floor(windowWidth / CELL_SIZE_WIDTH);
+    setEffectSize(width: number, height: number) {
+        this.tableHeight = width;
+        this.tableWidth = height;
 
         // Construct the tree of rows and cols
         this.domRenderElement.innerHTML = new Array(this.tableHeight)
@@ -269,5 +263,3 @@ class AsciiEffect {
         this.domRenderElement.innerHTML = renderedHtml;
     }
 }
-
-export { AsciiEffect };

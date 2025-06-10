@@ -1,6 +1,6 @@
 "use client";
 
-import { AsciiEffect } from "@/components/three/ascii";
+import { ThreeAsciiEffect } from "@/components/ascii/three-ascii-effect";
 import { useEffect, useRef } from "react";
 import {
     AmbientLight,
@@ -10,15 +10,14 @@ import {
     MeshStandardMaterial,
     PerspectiveCamera,
     PointLight,
-    PointLightHelper,
     Scene,
     WebGLRenderer,
     WebGLRenderTarget,
 } from "three";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
-import "./ascii.css";
+import "./index.css";
 
-const DEBUG = false;
+const DEBUG = true;
 
 let camera: PerspectiveCamera,
     scene: Scene,
@@ -29,13 +28,53 @@ let camera: PerspectiveCamera,
     pointLight3: PointLight,
     orbitControls: OrbitControls,
     box: Mesh,
-    effect: AsciiEffect,
+    effect: ThreeAsciiEffect,
     stopped = true,
     isDragging = false,
     lastRender = new Date().getTime();
 
-export function ThreeBackground() {
+interface AsciiEffectProps {
+    width: number;
+    height: number;
+}
+
+export function AsciiEffect({ width = 20, height = 20 }: AsciiEffectProps) {
     const refContainer = useRef<HTMLDivElement>(null);
+
+    function step(timeElapsed: number = 0) {
+        if (stopped) {
+            return;
+        }
+
+        render();
+    }
+
+    function stopAnimate() {
+        console.log("stopped.");
+        stopped = true;
+    }
+
+    function render() {
+        const delta = new Date().getTime() - lastRender;
+        lastRender = new Date().getTime();
+
+        if (!isDragging) {
+            box.rotation.x -= -delta * 0.0003;
+            box.rotation.z += delta * 0.0002;
+            box.rotation.y += delta * 0.0002;
+        }
+
+        renderer.render(scene, camera);
+        effect.render(renderer);
+    }
+
+    useEffect(() => {
+        if (!effect) {
+            return;
+        }
+
+        effect.setEffectSize(width, height);
+    }, [width, height]);
 
     useEffect(() => {
         function init() {
@@ -45,12 +84,7 @@ export function ThreeBackground() {
                 throw new Error("Ref empty");
             }
 
-            camera = new PerspectiveCamera(
-                70,
-                window.innerWidth / window.innerHeight,
-                1,
-                1000
-            );
+            camera = new PerspectiveCamera(70, 1, 1, 1000);
 
             camera.position.y = 0;
             camera.position.z = 300;
@@ -67,40 +101,13 @@ export function ThreeBackground() {
             pointLight1.position.set(500, 500, 0);
             scene.add(pointLight1);
 
-            if (DEBUG) {
-                scene.add(
-                    new PointLightHelper(
-                        pointLight1,
-                        pointLightHelperSphereSize
-                    )
-                );
-            }
-
             pointLight2 = new PointLight(0xffffff, 1, 0, 0);
             pointLight2.position.set(-500, 500, 500);
             scene.add(pointLight2);
 
-            if (DEBUG) {
-                scene.add(
-                    new PointLightHelper(
-                        pointLight2,
-                        pointLightHelperSphereSize
-                    )
-                );
-            }
-
             pointLight3 = new PointLight(0xffffff, 1, 0, 0);
             pointLight3.position.set(-500, 500, 500);
             scene.add(pointLight3);
-
-            if (DEBUG) {
-                scene.add(
-                    new PointLightHelper(
-                        pointLight3,
-                        pointLightHelperSphereSize
-                    )
-                );
-            }
 
             let shader = new MeshStandardMaterial({
                 metalness: 1, // between 0 and 1
@@ -113,14 +120,17 @@ export function ThreeBackground() {
             scene.add(box);
 
             renderer = new WebGLRenderer({ alpha: true });
-            renderer.setSize(window.innerWidth, window.innerHeight);
+            renderer.setSize(50, 50);
 
             // Clear container
             refContainer.current.innerHTML = "";
 
-            effect = new AsciiEffect({ debug: DEBUG }, refContainer.current);
+            effect = new ThreeAsciiEffect(
+                { debug: DEBUG },
+                refContainer.current
+            );
 
-            effect.setWindowSize(window.innerWidth, window.innerHeight);
+            effect.setEffectSize(width, height);
 
             // Append the canvas
             refContainer.current.appendChild(effect.domRenderElement);
@@ -134,45 +144,9 @@ export function ThreeBackground() {
                 isDragging = false;
             });
 
-            window.addEventListener("resize", onWindowResize);
-
             stopped = false;
 
             renderer.setAnimationLoop(step);
-        }
-
-        function onWindowResize() {
-            camera.aspect = window.innerWidth / window.innerHeight;
-            camera.updateProjectionMatrix();
-            renderer.setSize(window.innerWidth, window.innerHeight);
-            effect.setWindowSize(window.innerWidth, window.innerHeight);
-        }
-
-        function step(timeElapsed: number = 0) {
-            if (stopped) {
-                return;
-            }
-
-            render();
-        }
-
-        function stopAnimate() {
-            console.log("stopped.");
-            stopped = true;
-        }
-
-        function render() {
-            const delta = new Date().getTime() - lastRender;
-            lastRender = new Date().getTime();
-
-            if (!isDragging && !DEBUG) {
-                box.rotation.x -= -delta * 0.0003;
-                box.rotation.z += delta * 0.0002;
-                box.rotation.y += delta * 0.0002;
-            }
-
-            renderer.render(scene, camera);
-            effect.render(renderer);
         }
 
         if (renderer) {
@@ -188,10 +162,5 @@ export function ThreeBackground() {
         };
     }, []);
 
-    return (
-        <div
-            className="absolute top-0 select-none w-full h-full d-flex justify-center overflow-hidden"
-            ref={refContainer}
-        />
-    );
+    return <div ref={refContainer} />;
 }

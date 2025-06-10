@@ -1,4 +1,3 @@
-import { ThreeBackground } from "@/components/three";
 import type { Metadata } from "next";
 import { Fira_Code } from "next/font/google";
 import "./globals.css";
@@ -19,7 +18,6 @@ export default function RootLayout({
         <html lang="en">
             <body className={fira.className}>
                 <main>{children}</main>
-                <ThreeBackground />
             </body>
         </html>
     );

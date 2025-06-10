@@ -1,9 +1,6 @@
 .ascii {
     white-space: pre;
-    max-height: 100vh;
     overflow: hidden;
-    width: 100vw;
-    height: 100vh;
     font-size: 1rem;
     letter-spacing: 0.125rem;
     line-height: 1rem;
