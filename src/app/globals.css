@@ -23,6 +23,7 @@
 :root {
     --accent-color: #000000;
     --text-color: #c3c3c3;
+    --text-highlight-color: #e2e2e2;
     --foreground-rgb: 0, 0, 0;
 
     --background-start-rgb: 214, 219, 220;
@@ -79,6 +80,10 @@ svg:hover {
 
 a {
     text-decoration: none;
+}
+
+a:hover {
+    color: var(--text-highlight-color);
 }
 
 i {

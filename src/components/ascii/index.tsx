@@ -12,7 +12,6 @@ import {
     PointLight,
     Scene,
     WebGLRenderer,
-    WebGLRenderTarget,
 } from "three";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import "./index.css";
@@ -22,7 +21,6 @@ const DEBUG = false;
 let camera: PerspectiveCamera,
     scene: Scene,
     renderer: WebGLRenderer,
-    renderTarget: WebGLRenderTarget,
     pointLight1: PointLight,
     pointLight2: PointLight,
     pointLight3: PointLight,
@@ -41,18 +39,13 @@ interface AsciiEffectProps {
 export function AsciiEffect({ width = 20, height = 20 }: AsciiEffectProps) {
     const refContainer = useRef<HTMLDivElement>(null);
 
-    const step = useCallback((timeElapsed: number = 0) => {
+    const step = useCallback(() => {
         if (stopped) {
             return;
         }
 
         render();
     }, []);
-
-    function stopAnimate() {
-        console.log("stopped.");
-        stopped = true;
-    }
 
     function render() {
         const delta = new Date().getTime() - lastRender;
@@ -78,7 +71,7 @@ export function AsciiEffect({ width = 20, height = 20 }: AsciiEffectProps) {
 
     useEffect(() => {
         function init() {
-            console.log("starting...");
+            console.debug("starting...");
 
             if (refContainer.current === null) {
                 throw new Error("Ref empty");
@@ -92,8 +85,6 @@ export function AsciiEffect({ width = 20, height = 20 }: AsciiEffectProps) {
 
             scene = new Scene();
             scene.background = new Color(0, 0, 0);
-
-            const pointLightHelperSphereSize = 3;
 
             scene.add(new AmbientLight(0xff00ff, 1));
 
@@ -109,14 +100,14 @@ export function AsciiEffect({ width = 20, height = 20 }: AsciiEffectProps) {
             pointLight3.position.set(-500, 500, 500);
             scene.add(pointLight3);
 
-            let shader = new MeshStandardMaterial({
+            let material = new MeshStandardMaterial({
                 metalness: 1, // between 0 and 1
                 roughness: 0.5, // between 0 and 1
                 emissive: "#ffffff",
                 emissiveIntensity: 0.025,
             });
 
-            box = new Mesh(new BoxGeometry(200, 200, 200), shader);
+            box = new Mesh(new BoxGeometry(200, 200, 200), material);
             scene.add(box);
 
             renderer = new WebGLRenderer({ alpha: true });
@@ -153,12 +144,12 @@ export function AsciiEffect({ width = 20, height = 20 }: AsciiEffectProps) {
             return;
         }
 
-        console.log("init!");
+        console.debug("init!");
 
         init();
 
         return () => {
-            console.log("stop!");
+            console.debug("stop!");
         };
     }, [height, step, width]);
 
