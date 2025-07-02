@@ -78,7 +78,7 @@ export function WarpEffect() {
 
     return (
         <div
-            className="z-[-1] w-full h-full fixed top-0 left-0"
+            className="z-[-1] bg-black w-full h-full fixed top-0 left-0"
             ref={refContainer}
         />
     );
