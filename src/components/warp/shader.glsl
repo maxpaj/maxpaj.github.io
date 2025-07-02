@@ -3,7 +3,7 @@
 uniform float clock;
 uniform vec2 resolution;
 
-float grayscale(float x) {
+float color(float x) {
     if (x < 20049.0 / 82979.0) {
         return 0.0;
     } else if (x < 327013.0 / 810990.0) {
@@ -15,9 +15,10 @@ float grayscale(float x) {
     }
 }
 
-vec4 colormap(float x) {
+vec4 colormap(float shade) {
     float opacity = 0.1;
-    return vec4(grayscale(x) * opacity, grayscale(x) * opacity, grayscale(x) * opacity, 1.0);
+    float color = color(shade) * opacity;
+    return vec4(color, color, color, 1.0);
 }
 
 float rand(vec2 n) { 
