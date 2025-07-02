@@ -1,4 +1,4 @@
-import { WarpEffect } from "@/components/warp";
+import { NoiseEffect } from "@/components/noise";
 import type { Metadata, Viewport } from "next";
 import { Fira_Code } from "next/font/google";
 import "./globals.css";
@@ -26,7 +26,7 @@ export default function RootLayout({
     return (
         <html lang="en">
             <body className={fira.className}>
-                <WarpEffect />
+                <NoiseEffect />
                 <main>{children}</main>
             </body>
         </html>

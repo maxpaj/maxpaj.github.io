@@ -12,7 +12,7 @@ import {
 } from "three";
 import fragshader from "./shader.glsl";
 
-export function WarpEffect() {
+export function NoiseEffect() {
     const refContainer = useRef<HTMLDivElement>(null);
 
     // Adding a shader effect background to the container
