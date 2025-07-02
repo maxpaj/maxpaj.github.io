@@ -2,7 +2,6 @@
 
 import { useEffect, useRef } from "react";
 import {
-    Clock,
     Mesh,
     PerspectiveCamera,
     PlaneGeometry,
@@ -58,10 +57,9 @@ export function WarpEffect() {
         });
 
         scene.add(new Mesh(new PlaneGeometry(200, 200), material));
-        const clock = new Clock();
 
         const animate = () => {
-            material.uniforms.clock.value = clock.getElapsedTime();
+            material.uniforms.clock.value = (Date.now() / 1000) % 1000000;
             renderer.render(scene, camera);
             requestAnimationFrame(animate);
         };
