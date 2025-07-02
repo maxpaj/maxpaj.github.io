@@ -37,6 +37,14 @@ export function WarpEffect() {
         renderer.setSize(window.innerWidth, window.innerHeight);
         container.appendChild(renderer.domElement);
 
+        // Add event listener for window resize
+        const onWindowResize = () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        };
+        window.addEventListener("resize", onWindowResize, false);
+
         const fragmentShader = fragshader;
 
         const material = new ShaderMaterial({
@@ -59,6 +67,13 @@ export function WarpEffect() {
         };
 
         animate();
+
+        // Clean up on component unmount
+        return () => {
+            window.removeEventListener("resize", onWindowResize, false);
+            container.removeChild(renderer.domElement);
+            renderer.dispose();
+        };
     }, []);
 
     return (

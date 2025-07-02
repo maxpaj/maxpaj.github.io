@@ -3,7 +3,7 @@ import Link from "next/link";
 export default function Home() {
     return (
         <>
-            <div className="p-4 flex gap-8 items-center flex-wrap flex-row-reverse md:flex-row md:flex-nowrap">
+            <div className="p-4 flex items-center flex-wrap flex-row">
                 <div className="flex flex-col gap-4 p-10">
                     <section>
                         <p className="max-w-md">
