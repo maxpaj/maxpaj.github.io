@@ -60,7 +60,7 @@ float pattern(in vec2 p)
 void main()
 {
     vec2 uv = gl_FragCoord.xy/resolution;
-    float opacity = 0.05;
+    float opacity = 0.1;
     float shade = pattern(uv);
     float color = colormap(shade) * opacity;
     gl_FragColor = vec4(color, color, color, 1.0);
