@@ -7,8 +7,8 @@ export default function Home() {
                 <div className="flex flex-col gap-4 px-8 py-24">
                     <section>
                         <p className="max-w-md">
-                            I am a freelance software developer who thrives on
-                            making things, solving problems, building usable
+                            Hi! <b>I am a freelance software developer</b> who thrives on
+                            making stuff, solving problems, building usable
                             software and improving developer workflows.
                         </p>
                     </section>

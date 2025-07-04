@@ -28,7 +28,7 @@
 
     --background-start-rgb: 214, 219, 220;
     --background-end-rgb: 255, 255, 255;
-    --background: linear-gradient(45deg, #4d4d4d -50%, #000 50%, #777 150%),
+    --background: linear-gradient(45deg, #4d4d4d -200%, #000 50%, #000 150%),
         #000;
 }
 
@@ -50,11 +50,12 @@ body {
     margin: 0;
     font-size: 14px;
     overflow-x: hidden;
-    line-height: 1rem;
+    line-height: 1.25rem;
 }
 
 body {
     color: var(--text-color);
+    background: var(--background);
 }
 
 .logo {

@@ -22,6 +22,7 @@ export function NoiseEffect() {
         const { current: container } = refContainer;
 
         const scene = new Scene();
+
         const camera = new PerspectiveCamera(
             45,
             window.innerWidth / window.innerHeight,
@@ -32,8 +33,9 @@ export function NoiseEffect() {
         camera.position.z = 1;
         camera.lookAt(0, 0, 0);
 
-        const renderer = new WebGLRenderer();
+        const renderer = new WebGLRenderer({ antialias: true, alpha: true});
         renderer.setSize(window.innerWidth, window.innerHeight);
+        
         container.appendChild(renderer.domElement);
 
         // Add event listener for window resize
@@ -54,6 +56,7 @@ export function NoiseEffect() {
                 },
             },
             fragmentShader,
+            transparent: true            
         });
 
         scene.add(new Mesh(new PlaneGeometry(200, 200), material));
@@ -76,7 +79,7 @@ export function NoiseEffect() {
 
     return (
         <div
-            className="z-[-1] bg-black w-full h-full fixed top-0 left-0"
+            className="z-[-1] w-full h-full fixed top-0 left-0"
             ref={refContainer}
         />
     );

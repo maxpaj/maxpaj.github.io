@@ -8,9 +8,7 @@ const fira = Fira_Code({ subsets: ["latin"] });
 export const viewport: Viewport = {
     themeColor: "black",
     width: "device-width",
-    initialScale: 1,
-    maximumScale: 1,
-    userScalable: false,
+    initialScale: 1
 };
 
 export const metadata: Metadata = {

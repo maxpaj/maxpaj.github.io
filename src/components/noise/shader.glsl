@@ -3,18 +3,6 @@
 uniform float clock;
 uniform vec2 resolution;
 
-float colormap(float x) {
-    if (x < .25) {
-        return 0.0;
-    } else if (x < .4125) {
-        return x * 1.25 - 20.0 / 255.0;
-    } else if (x <= 1.0) {
-        return x * 1.25 + 10.0 / 255.0;
-    } else {
-        return 1.0;
-    }
-}
-
 float rand(vec2 n) { 
     return fract(sin(dot(n, vec2(13.0, 4.015))) * 142500.0);
 }
@@ -62,6 +50,6 @@ void main()
     vec2 uv = gl_FragCoord.xy/resolution;
     float opacity = 0.075;
     float shade = pattern(uv);
-    float color = colormap(shade) * opacity;
-    gl_FragColor = vec4(color, color, color, 1.0);
+    
+    gl_FragColor = vec4(255.0, 255.0, 255.0, shade * opacity);
 }
