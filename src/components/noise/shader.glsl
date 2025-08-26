@@ -45,10 +45,11 @@ float pattern(in vec2 p)
     return brownian(p + brownian(p + brownian(p)));
 }
 
+const float opacity = 0.125;
+
 void main()
 {
     vec2 uv = gl_FragCoord.xy/resolution;
-    float opacity = 0.075;
     float shade = pattern(uv);
     
     gl_FragColor = vec4(255.0, 255.0, 255.0, shade * opacity);
