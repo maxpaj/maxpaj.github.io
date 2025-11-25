@@ -1,4 +1,4 @@
-import { NoiseEffect } from "@/components/noise";
+import { NoiseEffectBackground } from "@/components/noise";
 import type { Metadata, Viewport } from "next";
 import { Fira_Code } from "next/font/google";
 import "./globals.css";
@@ -6,9 +6,10 @@ import "./globals.css";
 const fira = Fira_Code({ subsets: ["latin"] });
 
 export const viewport: Viewport = {
-    themeColor: "black",
+    themeColor: "#0b0b0b",
     width: "device-width",
-    initialScale: 1
+    viewportFit: "cover",
+    initialScale: 1,
 };
 
 export const metadata: Metadata = {
@@ -24,7 +25,7 @@ export default function RootLayout({
     return (
         <html lang="en">
             <body className={fira.className}>
-                <NoiseEffect />
+                <NoiseEffectBackground />
                 <main>{children}</main>
             </body>
         </html>

@@ -12,7 +12,7 @@ import {
 } from "three";
 import fragshader from "./shader.glsl";
 
-export function NoiseEffect() {
+export function NoiseEffectBackground() {
     const refContainer = useRef<HTMLDivElement>(null);
 
     // Adding a shader effect background to the container
@@ -23,19 +23,15 @@ export function NoiseEffect() {
 
         const scene = new Scene();
 
-        const camera = new PerspectiveCamera(
-            45,
-            window.innerWidth / window.innerHeight,
-            0.1,
-            1000
-        );
+        const aspect = window.innerWidth / window.innerHeight;
+        const camera = new PerspectiveCamera(45, aspect, 0.1, 100);
 
         camera.position.z = 1;
         camera.lookAt(0, 0, 0);
 
-        const renderer = new WebGLRenderer({ antialias: true, alpha: true});
+        const renderer = new WebGLRenderer({ antialias: false, alpha: true });
         renderer.setSize(window.innerWidth, window.innerHeight);
-        
+
         container.appendChild(renderer.domElement);
 
         // Add event listener for window resize
@@ -52,14 +48,15 @@ export function NoiseEffect() {
             uniforms: {
                 clock: { value: 0 },
                 resolution: {
-                    value: new Vector3(500, 500, 1),
+                    value: new Vector3(250, 250, 1),
                 },
             },
+            dithering: true,
             fragmentShader,
-            transparent: true            
+            transparent: true,
         });
 
-        scene.add(new Mesh(new PlaneGeometry(200, 200), material));
+        scene.add(new Mesh(new PlaneGeometry(50, 50), material));
 
         const animate = () => {
             material.uniforms.clock.value = (Date.now() / 1000) % 1000000;
