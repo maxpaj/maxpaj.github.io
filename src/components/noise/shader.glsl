@@ -48,7 +48,7 @@ float pattern(in vec2 p)
 
 const float d = 64.0;
 
-const float bayerMatrix8x8[64] = float[64](
+const float ditheringMatrix[64] = float[64](
     0.0/d,  48.0/d, 12.0/d, 60.0/d, 3.0/d,  51.0/d, 15.0/d, 63.0/d,
     32.0/d, 16.0/d, 44.0/d, 28.0/d, 35.0/d, 19.0/d, 47.0/d, 31.0/d,
     8.0/d,  56.0/d, 4.0/d,  52.0/d, 11.0/d, 59.0/d, 7.0/d,  55.0/d,
@@ -64,7 +64,7 @@ const float colorNum = 2.0;
 vec3 dither(vec2 uv, vec3 color) {
   int x = int(uv.x * resolution.x) % 8;
   int y = int(uv.y * resolution.y) % 8;
-  float threshold = bayerMatrix8x8[y * 8 + x] - 0.25;
+  float threshold = ditheringMatrix[y * 8 + x] - 0.25;
 
   color.rgb += threshold;
   color.r = floor(color.r * (colorNum - 1.0) + 0.5) / (colorNum - 1.0);
@@ -78,7 +78,7 @@ const float opacity = 0.125;
 
 void main()
 {
-    vec2 uv = gl_FragCoord.xy/resolution;
+    vec2 uv = gl_FragCoord.xy/resolution/3.0;
     float shade = pattern(uv);
 
     vec4 color = vec4(255.0, 255.0, 255.0, shade * opacity);
