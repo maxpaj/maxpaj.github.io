@@ -48,7 +48,7 @@ export function NoiseEffectBackground() {
             uniforms: {
                 clock: { value: 0 },
                 resolution: {
-                    value: new Vector3(250, 250, 1),
+                    value: new Vector3(100, 100, 1),
                 },
             },
             dithering: true,

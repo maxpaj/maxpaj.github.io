@@ -4,7 +4,7 @@ export default function Home() {
     return (
         <>
             <div className="p-4 flex items-center flex-wrap flex-row">
-                <div className="flex flex-col gap-4 px-8 py-24">
+                <div className="flex flex-col gap-4 px-4 sm:px-8 py-16 sm:py-24">
                     <section>
                         <p className="max-w-md">
                             Hi! <b>I am a freelance software developer</b> who thrives on

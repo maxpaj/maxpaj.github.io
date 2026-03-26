@@ -74,7 +74,7 @@ vec3 dither(vec2 uv, vec3 color) {
   return color;
 }
 
-const float opacity = 0.125;
+const float opacity = 0.175;
 
 void main()
 {
